@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lộ trình Full Stack: hôm nay học gì?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Patrick+Hand&display=swap&subset=vietnamese" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F8FC; --grid:#E3E9F4; --margin:#E8A3A0;
+  --text:#1B2333; --muted:#5B6478; --ink:#1F3A93;
+  --hl:#FFE45C; --red:#C8372D; --green:#2E7D4F;
+  --line:#CBD5E6; --card:#FFFFFF;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111826; --grid:#1B2435; --margin:#7A3B3B;
+    --text:#E6EAF2; --muted:#9AA3B5; --ink:#9DB8FF;
+    --hl:rgba(255,228,92,.28); --red:#FF8A7A; --green:#6FD3A0;
+    --line:#2C3850; --card:#161F30;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111826; --grid:#1B2435; --margin:#7A3B3B;
+  --text:#E6EAF2; --muted:#9AA3B5; --ink:#9DB8FF;
+  --hl:rgba(255,228,92,.28); --red:#FF8A7A; --green:#6FD3A0;
+  --line:#2C3850; --card:#161F30;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--text); background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px, transparent 1px);
+  background-size:100% 30px;
+  font-family:"Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif;
+  font-size:17px; line-height:1.6;
+}
+a{color:var(--ink); text-underline-offset:3px}
+a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visible, input:focus-visible{
+  outline:3px solid var(--ink); outline-offset:2px; border-radius:4px;
+}
+.hand{font-family:"Patrick Hand", "Comic Sans MS", cursive; font-weight:400}
+.page{
+  position:relative; max-width:800px; margin:0 auto; padding:32px 24px 64px 72px;
+}
+.page::before{
+  content:""; position:absolute; top:0; bottom:0; left:48px; width:2px; background:var(--margin);
+}
+header.top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:8px}
+header.top .brand{font-size:15px; color:var(--muted)}
+.progress{font-size:15px; color:var(--muted)}
+.bar{height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin-top:4px; width:220px; max-width:100%}
+.bar span{display:block; height:100%; background:var(--green); width:0; transition:width .4s}
+
+.today-date{font-size:clamp(40px, 8vw, 64px); line-height:1.05; color:var(--ink); margin:28px 0 4px}
+.today-meta{color:var(--muted); margin:0 0 6px}
+.milestone{color:var(--red); margin:0 0 20px; font-size:20px}
+
+.day-card{background:var(--card); border:1px solid var(--line); border-radius:6px; padding:22px 24px; margin:8px 0 24px}
+.day-goal{font-size:26px; line-height:1.3; margin:0 0 4px; font-weight:700}
+.day-goal span{background:linear-gradient(transparent 58%, var(--hl) 58%); padding:0 2px}
+.tag{display:inline-block; font-size:14px; color:var(--red); border:1.5px solid var(--red); border-radius:4px; padding:0 8px; margin:6px 0 0}
+.tag.rest{color:var(--green); border-color:var(--green)}
+.blk{margin-top:18px}
+.blk h4{margin:0 0 4px; font-size:15px; font-weight:700; color:var(--ink)}
+.blk ul, .blk ol{margin:0; padding-left:22px}
+.blk li{margin:3px 0}
+.blk code, .day-card code{font-family:ui-monospace, Menlo, Consolas, monospace; font-size:.88em; background:var(--grid); padding:1px 5px; border-radius:3px}
+.check-q{font-size:21px; line-height:1.4; color:var(--text); margin:0}
+.docs a{display:inline-block; margin:2px 14px 2px 0}
+
+.done-row{display:flex; align-items:center; gap:10px; margin-top:22px; padding-top:16px; border-top:1px dashed var(--line)}
+.done-row input{width:24px; height:24px; accent-color:var(--green); cursor:pointer; margin:0}
+.done-row label{cursor:pointer; font-weight:500}
+.done-row.is-done label{color:var(--green)}
+
+.prep{border-left:4px solid var(--hl); padding:4px 0 4px 16px; margin:12px 0 24px}
+.prep h3{margin:0 0 6px; font-size:19px}
+.missed{border-left:4px solid var(--red); padding:4px 0 4px 16px; margin:0 0 20px}
+.missed h3{margin:0 0 4px; font-size:19px}
+.missed p{margin:0 0 6px; color:var(--muted)}
+.missed ul{margin:0; padding-left:20px}
+.missed button{font:inherit; color:var(--ink); background:none; border:0; padding:0; text-decoration:underline; text-underline-offset:3px; cursor:pointer; text-align:left}
+
+h2.section{font-size:30px; color:var(--ink); margin:48px 0 8px; font-weight:400}
+.phases{list-style:none; margin:0; padding:0}
+.phases li{display:grid; grid-template-columns:120px 1fr; gap:12px; padding:8px 0; border-bottom:1px solid var(--line)}
+.phases .when{color:var(--muted); font-size:15px}
+.phases .now{font-weight:700}
+.phases .now .name::after{content:"  đang ở đây"; color:var(--red); font-family:"Patrick Hand", cursive; font-weight:400; font-size:19px}
+.phases .past .name{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--green)}
+
+.weeknav{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:12px 0 4px}
+.weeknav button, .weeknav select{
+  font:inherit; font-size:15px; color:var(--text); background:var(--card);
+  border:1px solid var(--line); border-radius:6px; padding:6px 12px; cursor:pointer;
+}
+.weeknav select{max-width:100%}
+.week-head{margin:18px 0 6px}
+.week-head h3{margin:0; font-size:22px}
+.week-head p{margin:2px 0 0; color:var(--muted)}
+details.day{border-bottom:1px solid var(--line)}
+details.day summary{cursor:pointer; padding:10px 4px; display:grid; grid-template-columns:110px 1fr auto; gap:10px; align-items:baseline; list-style:none}
+details.day summary::-webkit-details-marker{display:none}
+details.day summary .d{color:var(--muted); font-size:15px}
+details.day summary .g{font-weight:500}
+details.day summary .st{font-size:14px; color:var(--green); white-space:nowrap}
+details.day.is-today summary .g{background:linear-gradient(transparent 58%, var(--hl) 58%)}
+details.day.is-today summary .d{color:var(--red); font-weight:700}
+details.day[open] summary{border-bottom:1px dashed var(--line)}
+details.day .inner{padding:4px 4px 18px}
+details.day .inner .day-card{margin:12px 0 0}
+
+.journal pre{white-space:pre-wrap; background:var(--card); border:1px solid var(--line); border-radius:6px; padding:16px; font-family:ui-monospace, Menlo, Consolas, monospace; font-size:14px; margin:8px 0}
+.journal button{font:inherit; font-size:15px; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:6px; padding:6px 12px; cursor:pointer}
+footer{margin-top:48px; color:var(--muted); font-size:14px}
+
+@media (max-width:600px){
+  body{font-size:16px}
+  .page{padding:20px 14px 48px 40px}
+  .page::before{left:26px}
+  .day-card{padding:18px 16px}
+  .day-goal{font-size:22px}
+  .phases li{grid-template-columns:1fr; gap:0}
+  details.day summary{grid-template-columns:1fr auto}
+  details.day summary .d{grid-column:1 / -1}
+}
+@media (prefers-reduced-motion: reduce){ .bar span{transition:none} }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="brand">Lộ trình Frontend lên Full Stack, 19/10/2026 đến 04/07/2027</div>
+    <div class="progress"><span id="progressText"></span><div class="bar"><span id="progressBar"></span></div></div>
+  </header>
+
+  <main>
+    <section id="today"></section>
+
+    <h2 class="section hand">Các giai đoạn</h2>
+    <ol class="phases" id="phases"></ol>
+
+    <h2 class="section hand">Xem theo tuần</h2>
+    <div class="weeknav">
+      <button type="button" id="prevWeek">Tuần trước</button>
+      <button type="button" id="thisWeek">Tuần hiện tại</button>
+      <button type="button" id="nextWeek">Tuần sau</button>
+      <select id="weekSelect" aria-label="Chọn tuần"></select>
+    </div>
+    <div id="weekView"></div>
+
+    <section class="prep-sec">
+      <h2 class="section hand">Câu hỏi cho vợ</h2>
+      <div class="prep"><p>Ngồi với vợ khoảng 30 phút trong tuần đầu tiên, hỏi và ghi vào <code>notes.md</code>:</p><ul id="prepList"></ul></div>
+    </section>
+
+    <section class="journal">
+      <h2 class="section hand">Nhật ký mỗi Chủ nhật</h2>
+      <p>Chép mẫu này vào <code>notes.md</code> và điền vào cuối mỗi tuần.</p>
+<pre id="journalTpl">### Tuần ...
+- Đã học:
+- Tính năng đã làm cho app:
+- Chỗ còn khó:
+- Góp ý của vợ:
+- Số giờ học thực tế:
+- Tuần sau cần điều chỉnh:</pre>
+      <button type="button" id="copyJournal">Sao chép mẫu</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>Mỗi tối: 30 phút học, 60 phút làm cho app, 5 phút ghi chú. Bí quá 30 phút mới hỏi AI, và nhờ AI giải thích chứ không xin code làm sẵn. Lỡ một buổi thì không bù gấp đôi: bù vào Chủ nhật, hoặc tuần dự phòng trước Tết.</p>
+    <p>Muốn xem trước một ngày bất kỳ, thêm <code>?date=2026-11-05</code> vào cuối đường dẫn. Đánh dấu “đã xong” được lưu trong trình duyệt của máy đang dùng.</p>
+  </footer>
+</div>
+<script>
+const J = p => ['javascript.info: ' + p, 'https://javascript.info/' + p];
+const TS = (n, p) => ['TS Handbook: ' + n, 'https://www.typescriptlang.org/docs/handbook/' + p];
+const R = p => ['react.dev: ' + p, 'https://react.dev/learn/' + p];
+const NE = (n, p) => ['NestJS: ' + n, 'https://docs.nestjs.com/' + p];
+const L = (n, u) => [n, u];
+
+const PV = {type:'pv', g:'Phỏng vấn hoặc ôn phỏng vấn',
+  h:['Nếu có lịch phỏng vấn: đọc lại mô tả công việc (JD) và tìm hiểu sản phẩm của công ty','Nếu không có lịch: ôn 3 câu hỏi JavaScript hoặc React và 1 câu kể về dự án sữa chua'],
+  l:['Trước phỏng vấn: đọc lại CV, chuẩn bị 2 câu hỏi để hỏi lại nhà tuyển dụng','Sau phỏng vấn: ghi các câu hỏi đã gặp vào notes.md, câu nào trả lời chưa tốt thì tra lại ngay','Cập nhật bảng theo dõi ứng tuyển (công ty, vòng, ngày, kết quả)'],
+  c:'Câu hỏi nào hôm nay làm bạn lúng túng nhất, và câu trả lời tốt hơn là gì?', d:[]};
+const REST = g => ({type:'nghi', g, h:[], l:['Nghỉ ngơi, dành thời gian cho gia đình. Nghỉ cũng là một phần của lộ trình.'], c:'', d:[]});
+const SUNDAY = {type:'on', g:'Ôn tập tuần và viết nhật ký',
+  h:['Gấp ghi chú lại, tự trả lời to các câu “tự kiểm tra” trong tuần','Câu nào trả lời chưa trôi chảy thì đọc lại bài đó'],
+  l:['Cho vợ dùng thử phiên bản mới nhất của app, ghi lại góp ý','Viết nhật ký tuần vào notes.md (mẫu ở cuối trang)','Xem trước nội dung tuần sau trên trang này'],
+  c:'Tuần này điều gì khó nhất, và mình đã vượt qua nó thế nào?', d:[]};
+
+const PHASES = [
+  {n:'Giai đoạn 1', name:'JavaScript hiện đại và TypeScript', w:[1,4]},
+  {n:'Giai đoạn 2', name:'React', w:[5,10]},
+  {n:'Giai đoạn 3', name:'Next.js, CV và chuẩn bị ứng tuyển', w:[11,14]},
+  {n:'Tuần dự phòng', name:'Tuần dự phòng', w:[15,15]},
+  {n:'Nghỉ Tết Nguyên Đán', name:'Nghỉ Tết Nguyên Đán', w:[16,17]},
+  {n:'Giai đoạn 4', name:'Backend, phỏng vấn và đánh giá tháng 4', w:[18,27]},
+  {n:'Giai đoạn 5', name:'Tồn kho, giá vốn, công nợ', w:[28,33]},
+  {n:'Giai đoạn 6', name:'Production và phỏng vấn Full Stack', w:[34,37]}
+];
+
+const MILESTONES = [
+  ['2026-11-14','App V1 online trên điện thoại của vợ'],
+  ['2026-12-26','App V2 bằng React hoàn thiện'],
+  ['2027-01-09','App V3 bằng Next.js'],
+  ['2027-01-12','Cập nhật CV'],
+  ['2027-01-25','Tuần dự phòng: bù các buổi còn thiếu'],
+  ['2027-02-20','Bắt đầu nộp đơn Senior Frontend'],
+  ['2027-03-01','Bắt đầu tháng phỏng vấn'],
+  ['2027-03-27','App V4 có server và đăng nhập'],
+  ['2027-04-05','Tuần đánh giá ở công ty'],
+  ['2027-06-05','App V5 có tồn kho, giá vốn, công nợ'],
+  ['2027-06-28','Ứng tuyển Full Stack'],
+  ['2027-07-04','Về đích']
+];
+
+const PREP = ['Hiện đang ghi thu chi ở đâu (sổ tay, Excel, Zalo)?','Thường nhập những hàng gì, chi những khoản gì?','Mỗi tháng muốn biết những con số nào?','Tiệm có bán sỉ và cho khách nợ không?','Có muốn biết lãi của từng loại sữa chua không?'];
+
+const WEEKS = [
+/* 1 */ {t:'Từ jQuery sang JavaScript hiện đại', goal:'App V1 đầu tiên chạy trên trình duyệt', days:[
+ {g:'Chuẩn bị môi trường và thiết kế dữ liệu',
+  h:['Cài VS Code, Node.js bản LTS, Git. Kiểm tra bằng lệnh <code>node -v</code> và <code>git --version</code>','<code>let</code>, <code>const</code> khác <code>var</code> thế nào: phạm vi theo khối, không khai báo lại được','Template string với dấu backtick và <code>${...}</code>'],
+  l:['Tạo repo <code>learning-journey</code> trên GitHub, clone về máy, tạo <code>notes.md</code>','Tạo thư mục <code>sua-chua-app</code> và file <code>data.js</code>','Viết 5 giao dịch mẫu dạng object: <code>id</code>, <code>type</code>, <code>amount</code>, <code>category</code>, <code>note</code>, <code>date</code>','In từng giao dịch ra bằng template string, chạy bằng <code>node data.js</code>','Trong tuần này, trước thứ Bảy: hỏi vợ các câu ở mục “Câu hỏi cho vợ” cuối trang (thứ Bảy làm form cần danh mục thật)'],
+  c:'Khi nào dùng const, khi nào dùng let? Vì sao gần như không dùng var nữa?', d:[J('variables'), J('var'), J('string')]},
+ {g:'Hàm định dạng tiền và ngày kiểu Việt Nam',
+  h:['Arrow function: cú pháp ngắn, trả về ngầm khi chỉ có một biểu thức','Tham số mặc định','<code>toLocaleString("vi-VN")</code> để định dạng số tiền'],
+  l:['Viết <code>formatMoney(amount, currency = "đ")</code>, ví dụ 1200000 thành “1.200.000 đ”','Viết <code>formatDate("2026-10-27")</code> trả về “27/10/2026”','Viết <code>getTypeLabel(type)</code> trả về “Thu”, “Chi”, “Nhập hàng”','Commit và đẩy lên GitHub'],
+  c:'Arrow function khác function thường ở điểm nào về this?', d:[J('arrow-functions-basics'), J('function-basics'), J('arrow-functions')]},
+ {g:'Thêm, sửa, xóa giao dịch',
+  h:['Destructuring object và mảng','Toán tử spread <code>...</code> để sao chép và gộp object, mảng','Bất biến (immutable): tạo mảng mới thay vì sửa mảng cũ'],
+  l:['<code>addTransaction(list, tx)</code> trả về mảng mới','<code>updateTransaction(list, id, changes)</code> dùng <code>map</code> và spread','<code>deleteTransaction(list, id)</code> dùng <code>filter</code>','Kiểm tra lại: mảng gốc không bị thay đổi'],
+  c:'Vì sao nên tạo mảng mới thay vì sửa trực tiếp mảng cũ? (tuần 6 học React sẽ thấy rõ)', d:[J('destructuring-assignment'), J('rest-parameters-spread')]},
+ {g:'Tính tổng thu, chi và lãi lỗ',
+  h:['<code>map</code>, <code>filter</code>, <code>find</code>, <code>some</code>','<code>reduce</code>: gom cả mảng thành một giá trị','Nối nhiều hàm mảng liên tiếp'],
+  l:['<code>getTotal(list, type)</code> tính tổng thu, tổng chi, tổng nhập hàng','<code>getProfit(list)</code> bằng thu trừ chi trừ nhập hàng','<code>groupByCategory(list)</code> trả về dạng <code>{ "Sữa": 1200000, "Bao bì": 350000 }</code>','In báo cáo tháng ra terminal cho dễ đọc'],
+  c:'map khác forEach ở đâu? Khi nào dùng cái nào?', d:[J('array-methods')]},
+ {g:'Tách code thành nhiều module',
+  h:['<code>import</code>, <code>export</code>, <code>export default</code>','Vì sao chia nhỏ file thay vì viết một file thật dài','Thêm <code>"type": "module"</code> vào <code>package.json</code>'],
+  l:['Chạy <code>npm init -y</code>, thêm <code>"type": "module"</code>','Tách thành <code>data.js</code>, <code>utils.js</code> (định dạng), <code>transactions.js</code> (thêm, sửa, xóa, tính tổng), <code>main.js</code>','Chạy lại <code>main.js</code>, kết quả phải giống hệt hôm qua'],
+  c:'So với nhúng nhiều thẻ script theo thứ tự như khi dùng jQuery, module giải quyết vấn đề gì?', d:[J('modules-intro'), J('import-export')]},
+ {g:'Giao diện V1: form nhập và bảng danh sách',
+  h:['<code>querySelector</code>, <code>addEventListener</code>, <code>classList</code>','Tạo phần tử bằng <code>createElement</code> hoặc template string','localStorage: <code>setItem</code>, <code>getItem</code>, <code>JSON.stringify</code>, <code>JSON.parse</code>'],
+  l:['<code>index.html</code>: form nhập loại, số tiền, danh mục, ghi chú, ngày','Bảng danh sách giao dịch, mới nhất ở trên cùng','Khu tổng: thu, chi, nhập hàng, lãi lỗ','Lưu và tải lại dữ liệu từ localStorage','Mở bằng tiện ích Live Server trong VS Code, nhập thử 10 giao dịch'],
+  c:'Liệt kê 5 lệnh jQuery bạn hay dùng và cách viết tương ứng bằng JavaScript thuần.', d:[J('searching-elements-dom'), J('modifying-document'), J('introduction-browser-events'), J('localstorage')]}
+]},
+/* 2 */ {t:'Bất đồng bộ và hoàn thiện V1', goal:'V1 đủ tốt để vợ dùng hằng ngày', days:[
+ {g:'Kiểm tra dữ liệu form',
+  h:['Đọc giá trị form: <code>input.value</code>, <code>select.value</code>, <code>FormData</code>','Sự kiện <code>submit</code> và <code>event.preventDefault()</code>'],
+  l:['Số tiền bắt buộc và lớn hơn 0','Bắt buộc chọn danh mục, ngày không được sau hôm nay','Hiện lỗi ngay dưới ô nhập, tự xóa lỗi khi người dùng sửa'],
+  c:'Vì sao sau này backend vẫn phải kiểm tra dữ liệu, dù giao diện đã kiểm tra rồi?', d:[J('form-elements'), J('forms-submit')]},
+ {g:'Promise',
+  h:['Bất đồng bộ là gì, vì sao JavaScript cần nó','Promise: <code>resolve</code>, <code>reject</code>, <code>then</code>, <code>catch</code>','So sánh với <code>$.ajax().done().fail()</code> bạn đã quen'],
+  l:['Viết <code>saveData(list)</code> trả về Promise, giả lập chờ 500ms bằng <code>setTimeout</code>','Hiện chữ “Đang lưu...” rồi đổi thành “Đã lưu”'],
+  c:'Promise có mấy trạng thái? Đó là những trạng thái nào?', d:[J('promise-basics'), J('promise-chaining')]},
+ {g:'async/await và xử lý lỗi',
+  h:['<code>async/await</code>: viết code bất đồng bộ dễ đọc như code thường','<code>try</code>, <code>catch</code>, <code>finally</code>'],
+  l:['Viết lại <code>saveData</code> và <code>loadData</code> bằng async/await','Bọc <code>JSON.parse</code> trong try/catch phòng dữ liệu bị hỏng','Hiện thông báo lỗi dễ hiểu cho người dùng'],
+  c:'Nếu quên chữ await trước một Promise thì chuyện gì xảy ra?', d:[J('async-await'), J('try-catch')]},
+ {g:'Tải danh mục bằng fetch',
+  h:['<code>fetch</code> và <code>response.json()</code>','Kiểm tra <code>response.ok</code> trước khi dùng dữ liệu'],
+  l:['Tạo <code>categories.json</code> chứa danh mục cho thu, chi, nhập hàng','Tải bằng fetch khi mở trang, đổ vào ô chọn danh mục','Ô danh mục tự đổi theo loại giao dịch đang chọn'],
+  c:'fetch khác $.ajax ở những điểm nào?', d:[J('fetch')]},
+ {g:'Lọc giao dịch theo tháng',
+  h:['Đối tượng <code>Date</code>: tạo ngày, lấy tháng, lấy năm','Lưu ý: tháng trong Date đếm từ 0'],
+  l:['Thêm ô chọn tháng (<code>input type="month"</code>)','Danh sách và khu tổng chỉ tính theo tháng đang chọn','Lọc thêm theo loại: tất cả, thu, chi, nhập hàng'],
+  c:'new Date(2026, 10, 1) là ngày nào? Vì sao?', d:[J('date')]},
+ {g:'Hoàn thiện V1',
+  h:['Event delegation: một listener xử lý cả bảng','CSS cho điện thoại: thẻ viewport, media query'],
+  l:['Nút sửa và xóa trên từng dòng, hỏi xác nhận trước khi xóa','Khối tổng kết tháng','Giao diện gọn gàng trên điện thoại','Đẩy lên GitHub, dán code nhờ AI review, sửa theo góp ý'],
+  c:'Event delegation là gì và vì sao nó hữu ích?', d:[J('event-delegation')]}
+]},
+/* 3 */ {t:'TypeScript cơ bản', goal:'Chuyển toàn bộ V1 sang TypeScript', days:[
+ {g:'Làm quen TypeScript',
+  h:['TypeScript là gì, vì sao hầu hết các công ty đều dùng','Tạo dự án bằng Vite: <code>npm create vite@latest</code>, chọn Vanilla và TypeScript','Kiểu cơ bản: string, number, boolean, mảng'],
+  l:['Tạo dự án <code>sua-chua-ts</code>, chạy <code>npm run dev</code>','Cố tình gán sai kiểu để xem VS Code báo lỗi đỏ ra sao'],
+  c:'TypeScript bắt lỗi lúc nào: khi viết code hay khi chạy?', d:[TS('The Basics','2/basic-types.html'), TS('Everyday Types','2/everyday-types.html')]},
+ {g:'type và interface',
+  h:['Khai báo <code>interface</code> và <code>type</code>','Thuộc tính tùy chọn <code>?</code> và <code>readonly</code>'],
+  l:['Tạo <code>src/types.ts</code>','Định nghĩa <code>interface Transaction</code> và <code>interface Category</code>','Gán kiểu cho mảng dữ liệu mẫu'],
+  c:'interface và type khác nhau ở đâu? Bạn sẽ chọn cái nào cho dự án này?', d:[TS('Object Types','2/objects.html')]},
+ {g:'Union type và thu hẹp kiểu',
+  h:['Literal type: <code>"thu" | "chi" | "nhap_hang"</code>','Thu hẹp kiểu (narrowing) bằng <code>if</code>, <code>switch</code>, <code>typeof</code>'],
+  l:['Khai báo <code>type TransactionType = "thu" | "chi" | "nhap_hang"</code>','Viết lại <code>getTypeLabel</code> bằng switch, để TypeScript báo khi thiếu trường hợp'],
+  c:'Vì sao dùng union tốt hơn là để type là string?', d:[TS('Narrowing','2/narrowing.html')]},
+ {g:'Kiểu cho function',
+  h:['Kiểu tham số và kiểu trả về','Hàm nhận callback'],
+  l:['Chuyển <code>utils.js</code> thành <code>utils.ts</code>','Chuyển <code>transactions.js</code> thành <code>transactions.ts</code>','Sửa hết lỗi đỏ'],
+  c:'Khi nào nên ghi rõ kiểu trả về của hàm, khi nào để TypeScript tự suy ra?', d:[TS('More on Functions','2/functions.html')]},
+ {g:'Làm việc với DOM có kiểu',
+  h:['<code>HTMLInputElement</code>, <code>HTMLSelectElement</code>, <code>HTMLFormElement</code>','Ép kiểu bằng <code>as</code> và kiểm tra <code>null</code>'],
+  l:['Chuyển <code>main.js</code> thành <code>main.ts</code>','Xử lý trường hợp <code>querySelector</code> trả về null'],
+  c:'Vì sao querySelector có thể trả về null, và jQuery xử lý chuyện này thế nào?', d:[TS('DOM Manipulation','dom-manipulation.html')]},
+ {g:'Hoàn tất V1 bằng TypeScript',
+  h:['Đọc lại các lỗi TypeScript hay gặp và cách sửa'],
+  l:['Chuyển nốt phần còn lại','Chạy <code>npm run build</code> không còn lỗi','Ghi vào notes.md 3 lỗi mà TypeScript đã bắt giúp bạn','Commit và đẩy lên GitHub'],
+  c:'TypeScript đã bắt được lỗi nào mà JavaScript thuần bỏ qua?', d:[]}
+]},
+/* 4 */ {t:'TypeScript nâng cao vừa đủ', goal:'V1.1 online trên GitHub Pages', days:[
+ {g:'Generics',
+  h:['Generic là gì: viết một hàm dùng được cho nhiều kiểu dữ liệu'],
+  l:['Viết <code>groupBy&lt;T&gt;(list: T[], getKey: (item: T) =&gt; string)</code>','Dùng nó để nhóm theo danh mục và theo ngày'],
+  c:'Nếu không có generic, bạn phải viết groupBy thế nào và có nhược điểm gì?', d:[TS('Generics','2/generics.html')]},
+ {g:'Utility types',
+  h:['<code>Partial</code>, <code>Pick</code>, <code>Omit</code>, <code>Record</code>'],
+  l:['<code>type NewTransaction = Omit&lt;Transaction, "id"&gt;</code> cho form tạo mới','<code>type TransactionUpdate = Partial&lt;NewTransaction&gt;</code> cho form sửa','Dùng <code>Record</code> cho kết quả nhóm theo danh mục'],
+  c:'Vì sao form tạo mới không nên có id?', d:[TS('Utility Types','utility-types.html')]},
+ {g:'as const, enum và union',
+  h:['<code>as const</code> và cách suy ra kiểu từ một mảng','So sánh enum với union, vì sao nhiều nhóm chọn union'],
+  l:['Khai báo danh sách danh mục bằng <code>as const</code>','Suy ra kiểu Category từ danh sách đó'],
+  c:'Lợi ích của việc chỉ khai báo danh mục ở một chỗ duy nhất là gì?', d:[TS('Enums','enums.html')]},
+ {g:'Bật chế độ strict',
+  h:['Các tùy chọn quan trọng trong <code>tsconfig.json</code>','<code>strict</code> bật những kiểm tra gì'],
+  l:['Bật <code>"strict": true</code>','Sửa toàn bộ lỗi xuất hiện','Ghi lại loại lỗi gặp nhiều nhất'],
+  c:'strictNullChecks giúp tránh loại lỗi nào?', d:[L('TSConfig: strict','https://www.typescriptlang.org/tsconfig#strict')]},
+ {g:'Tổ chức thư mục dự án',
+  h:['Cách chia thư mục theo trách nhiệm'],
+  l:['Sắp xếp lại: <code>src/types</code>, <code>src/services</code> (lưu trữ), <code>src/ui</code> (vẽ giao diện), <code>src/utils</code>','Mỗi file chỉ làm một việc','Kiểm tra app vẫn chạy đúng'],
+  c:'Nếu sau này đổi localStorage sang server, bạn chỉ cần sửa thư mục nào?', d:[]},
+ {g:'Đưa V1.1 lên mạng',
+  h:['Vite build, đường dẫn <code>base</code> khi deploy lên GitHub Pages'],
+  l:['Cấu hình <code>base</code> trong <code>vite.config.ts</code>','Deploy lên GitHub Pages','Gửi link cho vợ, thêm vào màn hình chính điện thoại','Nhắc vợ vẫn ghi sổ song song vì dữ liệu chỉ nằm trên một máy'],
+  c:'Vì sao dữ liệu localStorage trên điện thoại vợ không hiện trên máy tính của bạn?', d:[L('Vite: Deploy lên GitHub Pages','https://vite.dev/guide/static-deploy#github-pages')]},
+ {type:'on', g:'Tổng kết giai đoạn 1',
+  h:['Nhìn lại 4 tuần: từ jQuery đến TypeScript'],
+  l:['Viết README cho dự án: mô tả, ảnh chụp, link demo','Viết nhật ký tuần','Tự thưởng một buổi nghỉ'],
+  c:'Nếu phải giải thích TypeScript cho một đồng nghiệp chỉ biết jQuery, bạn sẽ nói gì?', d:[]}
+]},
+/* 5 */ {t:'Nền tảng React', goal:'Bắt đầu V2 bằng React', days:[
+ {g:'Tư duy React',
+  h:['Đọc bài Thinking in React','Khác biệt lớn nhất: jQuery sửa DOM trực tiếp, React mô tả giao diện theo dữ liệu'],
+  l:['Tạo dự án <code>sua-chua-react</code> bằng Vite (React + TypeScript)','Chép <code>types.ts</code> và <code>utils.ts</code> từ V1 sang','Vẽ ra giấy: app gồm những component nào'],
+  c:'Giải thích bằng lời của bạn: “giao diện là kết quả của dữ liệu” nghĩa là gì?', d:[R('thinking-in-react')]},
+ {g:'Component và props',
+  h:['JSX','Component là một function trả về JSX','Khai báo kiểu cho props bằng TypeScript'],
+  l:['Viết component <code>TransactionItem</code> nhận prop <code>transaction</code>','Hiển thị 3 giao dịch mẫu'],
+  c:'Props khác biến thường trong component ở điểm nào?', d:[R('your-first-component'), R('passing-props-to-a-component')]},
+ {g:'Hiển thị danh sách',
+  h:['Dùng <code>map</code> trong JSX','<code>key</code> là gì và vì sao bắt buộc','Hiển thị có điều kiện'],
+  l:['Viết <code>TransactionList</code> nhận mảng và vẽ từng <code>TransactionItem</code>','Màu khác nhau cho thu, chi, nhập hàng','Hiện “Chưa có giao dịch nào” khi danh sách rỗng'],
+  c:'Điều gì xảy ra nếu dùng chỉ số mảng (index) làm key?', d:[R('rendering-lists'), R('conditional-rendering')]},
+ {g:'useState',
+  h:['State là bộ nhớ của component','Khi state thay đổi, React vẽ lại giao diện'],
+  l:['Đưa mảng giao dịch vào <code>useState</code>','Viết component <code>Summary</code> tính tổng thu, chi, lãi lỗ từ mảng'],
+  c:'Vì sao gán biến thường thì giao diện không tự cập nhật?', d:[R('state-a-components-memory')]},
+ {g:'Sự kiện và form',
+  h:['<code>onClick</code>, <code>onChange</code>, <code>onSubmit</code>','Controlled input: giá trị ô nhập nằm trong state'],
+  l:['Viết <code>TransactionForm</code> với các ô controlled','Kiểm tra dữ liệu trước khi gửi'],
+  c:'Controlled input khác cách bạn lấy giá trị bằng $("#input").val() thế nào?', d:[R('responding-to-events'), R('reacting-to-input-with-state')]},
+ {g:'Ghép thành app hoàn chỉnh',
+  h:['Truyền hàm qua props để component con báo cho component cha'],
+  l:['<code>App</code> giữ state danh sách, truyền hàm thêm giao dịch xuống form','Thêm giao dịch thì danh sách và tổng tự cập nhật','So sánh số dòng code với V1'],
+  c:'Phần nào trong React bạn thấy dễ hơn jQuery, phần nào khó hơn?', d:[]}
+]},
+/* 6 */ {t:'State nâng cao', goal:'V2 đủ chức năng thêm, sửa, xóa, lọc', days:[
+ {g:'Chia sẻ state giữa các component',
+  h:['Lifting state up: đưa state lên component cha chung'],
+  l:['Đưa state bộ lọc lên <code>App</code>','<code>TransactionList</code> và <code>Summary</code> cùng dùng dữ liệu đã lọc'],
+  c:'Khi hai component cần cùng một dữ liệu, state nên đặt ở đâu?', d:[R('sharing-state-between-components')]},
+ {g:'Sửa và xóa trong state',
+  h:['Cập nhật object và mảng trong state mà không làm thay đổi dữ liệu cũ'],
+  l:['Nút xóa trên từng giao dịch, hỏi xác nhận','Bấm sửa thì đổ dữ liệu vào form, lưu lại thì cập nhật đúng dòng'],
+  c:'Bây giờ bạn đã hiểu vì sao tuần 1 phải tạo mảng mới chưa? Giải thích lại.', d:[R('updating-objects-in-state'), R('updating-arrays-in-state')]},
+ {g:'useEffect và lưu trữ',
+  h:['<code>useEffect</code> dùng để đồng bộ với bên ngoài React','Khi nào không cần useEffect'],
+  l:['Đọc dữ liệu từ localStorage lúc mở app','Lưu lại mỗi khi danh sách thay đổi'],
+  c:'Mảng phụ thuộc (dependency array) của useEffect dùng để làm gì?', d:[R('synchronizing-with-effects'), R('you-might-not-need-an-effect')]},
+ {g:'Custom hook',
+  h:['Tách logic dùng lại thành hook riêng'],
+  l:['Viết <code>useLocalStorage()</code>','Viết <code>useTransactions()</code> chứa thêm, sửa, xóa, tính tổng','Component chỉ còn lo hiển thị'],
+  c:'Custom hook khác một function thường ở điểm nào?', d:[R('reusing-logic-with-custom-hooks')]},
+ {g:'Lọc dữ liệu với useMemo',
+  h:['Dữ liệu suy ra từ state, không cần lưu thêm state','<code>useMemo</code> và khi nào thật sự cần'],
+  l:['Lọc theo tháng, loại, danh mục','Tổng tiền tính theo dữ liệu đã lọc'],
+  c:'Vì sao không nên lưu “danh sách đã lọc” thành một state riêng?', d:[L('react.dev: useMemo','https://react.dev/reference/react/useMemo')]},
+ {g:'Tìm kiếm và hoàn thiện',
+  h:['Xử lý ô tìm kiếm theo ghi chú'],
+  l:['Ô tìm kiếm theo ghi chú, không phân biệt hoa thường','Kiểm tra lại toàn bộ thêm, sửa, xóa, lọc','Commit, nhờ AI review'],
+  c:'Nếu có 10.000 giao dịch, phần nào có thể bị chậm?', d:[]}
+]},
+/* 7 */ {t:'Điều hướng và giao diện', goal:'V2 có nhiều trang, đẹp trên điện thoại', days:[
+ {g:'React Router',
+  h:['Single page app điều hướng thế nào','Cài và cấu hình React Router'],
+  l:['Tạo các trang: Tổng quan <code>/</code>, Giao dịch <code>/giao-dich</code>, Danh mục <code>/danh-muc</code>'],
+  c:'Chuyển trang trong SPA khác gì bấm link trên web thường?', d:[L('React Router','https://reactrouter.com')]},
+ {g:'Layout và menu',
+  h:['Layout dùng chung, <code>Outlet</code>','<code>NavLink</code> đánh dấu trang đang mở'],
+  l:['Header và menu dùng chung cho mọi trang','Menu đổi màu ở trang đang xem'],
+  c:'Lợi ích của layout dùng chung là gì?', d:[L('React Router','https://reactrouter.com')]},
+ {g:'Trang quản lý danh mục',
+  h:['Áp dụng lại toàn bộ kiến thức thêm, sửa, xóa'],
+  l:['Thêm, sửa, xóa danh mục','Không cho xóa danh mục đang có giao dịch'],
+  c:'Vì sao không nên cho xóa danh mục đang được dùng?', d:[]},
+ {g:'Trang chi tiết giao dịch',
+  h:['Tham số trên URL, <code>useParams</code>'],
+  l:['Trang <code>/giao-dich/:id</code> hiển thị chi tiết','Hiện thông báo khi không tìm thấy giao dịch'],
+  c:'Khi nào nên đưa thông tin lên URL?', d:[L('React Router','https://reactrouter.com')]},
+ {g:'Tailwind CSS',
+  h:['Utility class là gì','Cài Tailwind cho dự án Vite'],
+  l:['Cài theo tài liệu chính thức','Làm lại giao diện form và danh sách bằng Tailwind'],
+  c:'Tailwind khác cách bạn viết CSS truyền thống ở đâu? Ưu và nhược điểm?', d:[L('Tailwind CSS docs','https://tailwindcss.com/docs')]},
+ {g:'Giao diện ưu tiên điện thoại',
+  h:['Mobile first: thiết kế cho màn hình nhỏ trước'],
+  l:['Menu đặt dưới đáy màn hình trên điện thoại','Nút đủ lớn để bấm bằng ngón tay','Thử trên điện thoại thật'],
+  c:'Vợ bạn thường dùng app ở đâu, trong tình huống nào? Giao diện đã phù hợp chưa?', d:[]}
+]},
+/* 8 */ {t:'Form và quản lý dữ liệu', goal:'Code V2 gọn gàng, dễ mở rộng', days:[
+ {g:'React Hook Form',
+  h:['Vì sao dùng thư viện form','<code>register</code>, <code>handleSubmit</code>, <code>formState.errors</code>'],
+  l:['Làm lại <code>TransactionForm</code> bằng React Hook Form'],
+  c:'React Hook Form giúp bớt được những đoạn code nào so với tự viết?', d:[L('React Hook Form','https://react-hook-form.com/get-started')]},
+ {g:'Kiểm tra dữ liệu bằng Zod',
+  h:['Schema là gì','Dùng chung schema cho kiểm tra dữ liệu và kiểu TypeScript (<code>z.infer</code>)'],
+  l:['Viết schema cho giao dịch','Nối Zod với React Hook Form'],
+  c:'Lợi ích của việc định nghĩa kiểu và luật kiểm tra ở cùng một chỗ là gì?', d:[L('Zod','https://zod.dev')]},
+ {g:'Context API',
+  h:['Truyền dữ liệu xuống sâu mà không cần props qua từng tầng'],
+  l:['Tạo <code>SettingsContext</code>: tên tiệm, đơn vị tiền','Hiển thị tên tiệm ở header'],
+  c:'Khi nào nên dùng Context, khi nào không nên?', d:[R('passing-data-deeply-with-context')]},
+ {g:'useReducer',
+  h:['Gom logic cập nhật state vào một chỗ'],
+  l:['Chuyển logic giao dịch sang reducer với các action: thêm, sửa, xóa'],
+  c:'useReducer có điểm gì giống cách bạn tổ chức code xử lý sự kiện trong jQuery?', d:[R('extracting-state-logic-into-a-reducer')]},
+ {g:'Trạng thái rỗng, lỗi, đang tải',
+  h:['Thiết kế cho trường hợp không có dữ liệu và trường hợp lỗi'],
+  l:['Component <code>EmptyState</code> có nút “Thêm giao dịch đầu tiên”','Thông báo lỗi rõ ràng khi lưu thất bại'],
+  c:'Một màn hình trống tốt nên nói gì với người dùng?', d:[]},
+ {g:'Refactor và review',
+  h:['Đọc lại code của chính mình như người lạ'],
+  l:['Đặt lại tên biến, tên hàm cho rõ nghĩa','Xóa code thừa','Nhờ AI review, sửa theo góp ý hợp lý'],
+  c:'Góp ý nào của AI bạn không đồng ý, và vì sao?', d:[]}
+]},
+/* 9 */ {t:'Báo cáo và biểu đồ', goal:'V2 có dashboard và báo cáo tháng', days:[
+ {g:'Biểu đồ cột thu chi',
+  h:['Cài và dùng Recharts'],
+  l:['Biểu đồ cột thu và chi theo từng ngày trong tháng'],
+  c:'Dữ liệu cần chuẩn bị ở dạng nào để vẽ được biểu đồ?', d:[L('Recharts','https://recharts.org')]},
+ {g:'Biểu đồ tròn theo danh mục',
+  h:['Chuyển dữ liệu nhóm theo danh mục thành dạng biểu đồ cần'],
+  l:['Biểu đồ tròn chi phí theo danh mục','Kèm bảng số liệu bên cạnh cho dễ đọc'],
+  c:'Khi nào biểu đồ tròn không phù hợp?', d:[L('Recharts','https://recharts.org')]},
+ {g:'Báo cáo tháng',
+  h:['Tính phần trăm tăng giảm'],
+  l:['Trang báo cáo: tổng thu, chi, nhập hàng, lãi lỗ','So sánh với tháng trước, hiện tăng hay giảm bao nhiêu phần trăm'],
+  c:'Ba con số nào vợ bạn quan tâm nhất mỗi cuối tháng?', d:[]},
+ {g:'Xuất file CSV',
+  h:['<code>Blob</code> và tạo link tải xuống','Thêm ký tự BOM để Excel đọc đúng tiếng Việt'],
+  l:['Nút “Xuất CSV” cho tháng đang xem','Mở thử bằng Excel, kiểm tra dấu tiếng Việt'],
+  c:'Vì sao file CSV có thể bị lỗi font tiếng Việt khi mở bằng Excel?', d:[]},
+ {g:'Sao lưu và khôi phục',
+  h:['<code>input type="file"</code> và <code>FileReader</code>'],
+  l:['Nút “Sao lưu” tải toàn bộ dữ liệu ra file JSON','Nút “Khôi phục” đọc file JSON và nạp lại dữ liệu'],
+  c:'Cần kiểm tra gì trước khi nạp dữ liệu từ một file người dùng chọn?', d:[]},
+ {g:'Dashboard trang Tổng quan',
+  h:['Sắp xếp thông tin quan trọng lên đầu'],
+  l:['Số liệu chính của tháng','Biểu đồ nhỏ','5 giao dịch gần nhất'],
+  c:'Mở app lên, vợ bạn cần thấy gì đầu tiên?', d:[]}
+]},
+/* 10 */ {t:'Dữ liệu từ API và test', goal:'Hoàn thiện V2', days:[
+ {g:'Giả lập API bằng json-server',
+  h:['REST API cơ bản: GET, POST, PUT, DELETE','Chạy json-server với file <code>db.json</code>'],
+  l:['Chạy json-server','Gọi API bằng fetch thay cho localStorage'],
+  c:'Khi dữ liệu nằm trên server, app phải xử lý thêm những tình huống nào?', d:[L('json-server','https://github.com/typicode/json-server')]},
+ {g:'TanStack Query: đọc dữ liệu',
+  h:['Server state khác UI state thế nào','<code>useQuery</code>: tự lo loading, lỗi, cache'],
+  l:['Lấy danh sách giao dịch bằng useQuery','Hiện trạng thái đang tải và lỗi'],
+  c:'TanStack Query giải quyết những việc gì mà useEffect + fetch phải tự làm?', d:[L('TanStack Query','https://tanstack.com/query/latest/docs/framework/react/overview')]},
+ {g:'TanStack Query: ghi dữ liệu',
+  h:['<code>useMutation</code>, <code>invalidateQueries</code>'],
+  l:['Thêm, sửa, xóa qua API','Danh sách tự làm mới sau mỗi thao tác'],
+  c:'Vì sao phải làm mới dữ liệu sau khi thêm hoặc sửa?', d:[L('TanStack Query','https://tanstack.com/query/latest/docs/framework/react/guides/mutations')]},
+ {g:'Viết test đầu tiên',
+  h:['Vitest và React Testing Library','Test theo cách người dùng sử dụng'],
+  l:['Test hàm tính tổng','Test form báo lỗi khi số tiền để trống','Test <code>Summary</code> hiện đúng số'],
+  c:'Test giúp bạn tự tin hơn ở chỗ nào khi sửa code?', d:[L('Vitest','https://vitest.dev/guide/'), L('React Testing Library','https://testing-library.com/docs/react-testing-library/intro/')]},
+ {g:'Hoàn thiện V2',
+  h:['Kiểm tra lại toàn bộ chức năng trước khi phát hành'],
+  l:['Trả lại lưu trữ bằng localStorage cho bản dùng thật (json-server chỉ để học)','Chạy <code>npm run build</code> không lỗi','Thử lại mọi chức năng trên điện thoại'],
+  c:'Từ V1 đến V2, điều gì thay đổi nhiều nhất trong cách bạn nghĩ về code giao diện?', d:[]},
+ {g:'Deploy V2 và chuyển dữ liệu cho vợ',
+  h:['Build và deploy dự án React'],
+  l:['Deploy lên Vercel hoặc GitHub Pages','Gửi link mới cho vợ','Chuyển dữ liệu từ V1 sang bằng chức năng sao lưu và khôi phục'],
+  c:'Chuyển dữ liệu giữa hai phiên bản cần chú ý điều gì để không mất dữ liệu?', d:[L('Vite: Deploy','https://vite.dev/guide/static-deploy')]},
+ {type:'on', g:'Tổng kết giai đoạn 2',
+  h:['Nhìn lại 6 tuần React'],
+  l:['Cập nhật README dự án với ảnh chụp mới','Viết nhật ký tuần','Giáng sinh vui vẻ!'],
+  c:'Nếu phỏng vấn hỏi “Hãy kể về một dự án React bạn đã làm”, bạn sẽ trả lời thế nào trong 2 phút?', d:[]}
+]},
+/* 11 */ {t:'Next.js cơ bản', goal:'Bắt đầu V3 bằng Next.js', days:[
+ {g:'Làm quen Next.js',
+  h:['Next.js là gì, khác React thuần ở đâu','Tạo dự án bằng <code>create-next-app</code> (App Router, TypeScript, Tailwind)'],
+  l:['Bắt đầu khóa học chính thức nextjs.org/learn, làm 2 chương đầu','Tạo dự án <code>sua-chua-next</code>'],
+  c:'Vì sao nhiều công ty dùng Next.js thay vì React thuần?', d:[L('Next.js Learn','https://nextjs.org/learn'), L('Next.js Docs','https://nextjs.org/docs')]},
+ {g:'Routing theo thư mục',
+  h:['<code>app/</code>, <code>page.tsx</code>, <code>layout.tsx</code>','<code>Link</code> để chuyển trang'],
+  l:['Tạo các trang Tổng quan, Giao dịch, Danh mục, Báo cáo','Layout chung có menu'],
+  c:'So với React Router, routing của Next.js tiện hơn ở đâu?', d:[L('Next.js: Layouts and Pages','https://nextjs.org/docs/app/getting-started/layouts-and-pages')]},
+ {g:'Server Component và Client Component',
+  h:['Phần nào chạy trên server, phần nào chạy trên trình duyệt','Khi nào cần <code>"use client"</code>'],
+  l:['Đánh dấu đúng các component có state hoặc sự kiện là client component'],
+  c:'Vì sao component dùng useState phải là client component?', d:[L('Next.js: Server and Client Components','https://nextjs.org/docs/app/getting-started/server-and-client-components')]},
+ {g:'Chuyển trang Tổng quan sang Next.js',
+  h:['Tái sử dụng component từ V2'],
+  l:['Chép component, hook, types từ V2 sang','Trang Tổng quan chạy giống V2'],
+  c:'Những phần nào dùng lại được nguyên vẹn, phần nào phải sửa?', d:[]},
+ REST('Nghỉ Tết Dương lịch'),
+ {g:'Chuyển các trang còn lại và deploy lên Vercel',
+  h:['Tham số động <code>[id]</code> trong Next.js','Kết nối repo GitHub với Vercel, tự deploy mỗi lần push'],
+  l:['Trang Giao dịch, chi tiết giao dịch, Danh mục, Báo cáo','Kiểm tra mọi chức năng như V2','Deploy V3 lên Vercel, push một thay đổi nhỏ để xem Vercel tự cập nhật'],
+  c:'Thư mục [id] trong Next.js tương ứng với gì trong React Router?', d:[L('Vercel: Deploy Next.js','https://vercel.com/docs/frameworks/nextjs')]}
+]},
+/* 12 */ {t:'Next.js nâng cao', goal:'V3 chạy như app trên điện thoại', days:[
+ {g:'Route Handlers',
+  h:['Viết API ngay trong Next.js: <code>app/api/.../route.ts</code>'],
+  l:['Viết API thử <code>GET /api/health</code> trả về JSON'],
+  c:'Khi nào API trong Next.js là đủ, khi nào cần backend riêng?', d:[L('Next.js: Route Handlers','https://nextjs.org/docs/app/getting-started/route-handlers-and-middleware')]},
+ {g:'Server Actions',
+  h:['Gửi form trực tiếp lên server không cần viết API'],
+  l:['Thử một form nhỏ dùng Server Action (ví dụ form góp ý)'],
+  c:'Server Action khác gọi API bằng fetch thế nào?', d:[L('Next.js: Updating Data','https://nextjs.org/docs/app/getting-started/updating-data')]},
+ {g:'Metadata và SEO',
+  h:['<code>metadata</code>, <code>generateMetadata</code>, Open Graph'],
+  l:['Thêm title, description cho từng trang','Liên hệ với những gì bạn đã làm SEO cho duanraucau.com'],
+  c:'Next.js giúp SEO tốt hơn React thuần nhờ đâu?', d:[L('Next.js: Metadata','https://nextjs.org/docs/app/getting-started/metadata-and-og-images')]},
+ {g:'Hiệu năng',
+  h:['<code>next/image</code>, <code>next/font</code>','Đo bằng Lighthouse trong Chrome DevTools'],
+  l:['Chạy Lighthouse, ghi điểm số','Sửa ít nhất 2 điểm được đề xuất, đo lại'],
+  c:'Chỉ số nào của Lighthouse ảnh hưởng nhiều nhất đến trải nghiệm trên điện thoại?', d:[L('Next.js: Image Optimization','https://nextjs.org/docs/app/getting-started/images')]},
+ {g:'Cài app lên màn hình điện thoại',
+  h:['Web app manifest: tên, icon, màu'],
+  l:['Thêm <code>app/manifest.ts</code> và icon','Cài thử lên điện thoại, mở như một app'],
+  c:'Người dùng nhận được lợi ích gì khi app mở toàn màn hình như app thật?', d:[L('Next.js: manifest','https://nextjs.org/docs/app/api-reference/file-conventions/metadata/manifest')]},
+ {g:'Hoàn thiện V3',
+  h:['Kiểm tra toàn bộ trên điện thoại thật'],
+  l:['Chuyển dữ liệu từ V2 sang bằng sao lưu và khôi phục','Vợ dùng V3 trên điện thoại','Ghi lại góp ý'],
+  c:'Góp ý nào của vợ làm bạn bất ngờ nhất?', d:[]}
+]},
+/* 13 */ {t:'CV, portfolio và ôn phỏng vấn', goal:'Sẵn sàng hồ sơ Senior Frontend', days:[
+ {type:'cv', g:'README dự án thật chỉn chu',
+  h:['Nhà tuyển dụng đọc README trong khoảng 1 phút: cần thấy ngay giá trị'],
+  l:['Đoạn mở đầu: app giải quyết vấn đề gì cho tiệm sữa chua','Ảnh chụp màn hình, link demo','Công nghệ, quá trình V1 đến V3, bài học rút ra'],
+  c:'Người lạ đọc README trong 1 phút sẽ hiểu được gì?', d:[]},
+ {type:'cv', g:'Cập nhật CV',
+  h:['CV viết theo kết quả, không chỉ liệt kê công việc'],
+  l:['Tóm tắt 3 dòng: 10 năm Frontend, React, TypeScript, Next.js','Mỗi kinh nghiệm có ít nhất một kết quả đo được','Mục Dự án: app thu chi tiệm sữa chua, có link','Nhờ AI góp ý CV'],
+  c:'Câu nào trong CV chứng minh được bạn không chỉ biết jQuery?', d:[L('ITviec: Mẫu CV IT','https://itviec.com/ho-so-cv/mau-cv')]},
+ {type:'cv', g:'LinkedIn và ITviec',
+  h:['Hồ sơ trực tuyến giúp nhà tuyển dụng tìm đến bạn'],
+  l:['Tiêu đề: Senior Frontend Developer (React, TypeScript)','Cập nhật kỹ năng, dự án, ảnh đại diện','Bật chế độ sẵn sàng nhận lời mời trên ITviec'],
+  c:'Nhà tuyển dụng tìm kiếm bằng những từ khóa nào? Hồ sơ của bạn đã có chưa?', d:[]},
+ {type:'cv', g:'Ôn câu hỏi JavaScript',
+  h:['Closure, <code>this</code>, event loop, Promise, hoisting, so sánh bằng <code>==</code> và <code>===</code>'],
+  l:['Mỗi chủ đề tự nói thành lời trong 2 phút, không nhìn tài liệu','Nhờ AI đặt câu hỏi phỏng vấn và chấm câu trả lời'],
+  c:'Giải thích event loop bằng một ví dụ đời thường.', d:[J('closure'), J('event-loop')]},
+ {type:'cv', g:'Ôn câu hỏi React',
+  h:['Khi nào component vẽ lại, <code>key</code>, dependency của useEffect, <code>memo</code>, controlled và uncontrolled'],
+  l:['Tự nói thành lời từng chủ đề','Chuẩn bị câu chuyện: chuyển từ jQuery sang React bằng một dự án thật'],
+  c:'Vì sao component bị vẽ lại khi component cha thay đổi, và làm sao hạn chế?', d:[R('render-and-commit')]},
+ {type:'cv', g:'Luyện live coding',
+  h:['Vừa code vừa nói ra suy nghĩ của mình'],
+  l:['Bài 1: viết hàm debounce, bấm giờ 30 phút','Bài 2: component danh sách có ô tìm kiếm và lọc, 30 phút','Nhờ AI đóng vai người phỏng vấn'],
+  c:'Lúc bị bí khi live coding, bạn nên nói gì với người phỏng vấn?', d:[]}
+]},
+/* 14 */ {t:'Khởi động Node.js', goal:'API đầu tiên chạy được', days:[
+ {g:'Node.js là gì',
+  h:['JavaScript chạy ngoài trình duyệt','Module <code>http</code> có sẵn'],
+  l:['Viết server bằng <code>http.createServer</code> trả về JSON','Mở trình duyệt xem kết quả'],
+  c:'JavaScript trên Node khác trên trình duyệt ở đâu (không có DOM, có file system...)?', d:[L('Node.js Learn','https://nodejs.org/en/learn/getting-started/introduction-to-nodejs')]},
+ {g:'npm và cấu trúc dự án Node',
+  h:['<code>package.json</code>, <code>scripts</code>, <code>dependencies</code>','Chạy lại tự động khi sửa code: <code>node --watch</code>'],
+  l:['Tạo dự án <code>sua-chua-api</code>','Thêm script <code>dev</code>'],
+  c:'dependencies và devDependencies khác nhau thế nào?', d:[L('npm docs: package.json','https://docs.npmjs.com/cli/configuring-npm/package-json')]},
+ {g:'Express đầu tiên',
+  h:['Route, request, response'],
+  l:['Cài Express','Viết <code>GET /api/transactions</code> trả về mảng mẫu'],
+  c:'req và res chứa những gì?', d:[L('Express: Hello world','https://expressjs.com/en/starter/hello-world.html'), L('Express: Routing','https://expressjs.com/en/guide/routing.html')]},
+ {type:'cv', g:'Lập danh sách công ty mục tiêu',
+  h:['Tuyển dụng gần như dừng quanh Tết, sau Tết mới nộp đơn'],
+  l:['Tìm 15 đến 20 công ty tuyển Senior Frontend React trên ITviec, LinkedIn','Tạo bảng theo dõi: công ty, vị trí, yêu cầu, link, trạng thái','Đánh dấu 5 nơi muốn vào nhất'],
+  c:'Điều gì quan trọng nhất với bạn ở công ty mới: lương, công nghệ, sự ổn định hay môi trường?', d:[L('ITviec: Frontend Developer','https://itviec.com/viec-lam-it/lap-trinh-vien-frontend')]},
+ {g:'Middleware',
+  h:['Middleware là gì, thứ tự chạy','<code>express.json()</code>'],
+  l:['Middleware ghi log mỗi request','Xử lý route không tồn tại (404)'],
+  c:'Middleware giống khái niệm nào bạn đã gặp ở frontend?', d:[L('Express: Using middleware','https://expressjs.com/en/guide/using-middleware.html')]},
+ {g:'API giao dịch lưu trong bộ nhớ',
+  h:['Thiết kế REST cho thêm, xem, sửa, xóa'],
+  l:['<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code> cho <code>/api/transactions</code>','Test bằng Postman hoặc Thunder Client trong VS Code'],
+  c:'Vì sao khởi động lại server thì dữ liệu mất hết? Cần gì để giữ lại?', d:[L('Thunder Client','https://www.thunderclient.com')]}
+]},
+/* dự phòng */ {t:'Tuần dự phòng trước Tết', goal:'Bù các buổi còn thiếu, không để nợ bài qua Tết', days:[
+ {type:'on', g:'Rà soát các buổi chưa xong',
+  h:['Xem lại mục “Buổi chưa xong” ở đầu trang'],
+  l:['Liệt kê các buổi chưa xong từ đầu lộ trình','Xếp theo thứ tự quan trọng: buổi có tính năng cho app làm trước, phần đọc thêm làm sau','Chia vào các tối trong tuần này'],
+  c:'Buổi nào bị lỡ nhiều nhất, và vì sao?', d:[]},
+ {type:'on', g:'Bù bài',
+  h:['Làm buổi chưa xong quan trọng nhất'],
+  l:['Làm bù theo danh sách hôm qua','Nếu không còn buổi nào thiếu: ôn lại TypeScript và React'],
+  c:'Phần nào bù xong bạn thấy dễ hơn lần đầu?', d:[]},
+ {type:'on', g:'Bù bài',
+  h:['Tiếp tục danh sách bù'],
+  l:['Làm bù theo danh sách','Nếu không còn buổi nào thiếu: làm thêm một tính năng nhỏ vợ đã góp ý'],
+  c:'Góp ý nào của vợ bạn chưa làm?', d:[]},
+ {type:'on', g:'Bù bài',
+  h:['Tiếp tục danh sách bù'],
+  l:['Làm bù theo danh sách','Nếu không còn buổi nào thiếu: ôn câu hỏi phỏng vấn JavaScript'],
+  c:'', d:[]},
+ {type:'cv', g:'Kiểm tra hồ sơ trước Tết',
+  h:['Hồ sơ sẵn sàng để sau Tết nộp ngay'],
+  l:['Đọc lại CV, README, LinkedIn một lượt','Kiểm tra lại danh sách công ty mục tiêu'],
+  c:'Nếu sau Tết có nhà tuyển dụng gọi ngay, bạn đã sẵn sàng chưa?', d:[]},
+ {g:'Tổng kết trước Tết',
+  h:['Nhìn lại 3 tháng từ jQuery đến Next.js và Node.js'],
+  l:['Viết tổng kết vào notes.md','Đẩy toàn bộ code lên GitHub'],
+  c:'Bạn tự hào nhất điều gì sau 3 tháng?', d:[]},
+ REST('Nghỉ ngơi, chuẩn bị Tết')
+]},
+/* 15 */ {t:'Nghỉ Tết', goal:'Nghỉ ngơi, sum họp gia đình', rest:'Nghỉ Tết Nguyên Đán'},
+/* 16 */ {t:'Nghỉ Tết', goal:'Nghỉ ngơi, nạp lại năng lượng', rest:'Nghỉ Tết Nguyên Đán'},
+/* 17 */ {t:'SQL và PostgreSQL', goal:'Hiểu và viết được SQL cho app', days:[
+ {g:'Cài PostgreSQL và tạo bảng đầu tiên',
+  h:['Cơ sở dữ liệu quan hệ là gì: bảng, hàng, cột','<code>CREATE DATABASE</code>, <code>CREATE TABLE</code>'],
+  l:['Cài PostgreSQL và DBeaver (hoặc TablePlus)','Tạo database <code>sua_chua</code>','Tạo bảng <code>transactions</code> đơn giản'],
+  c:'Bảng trong database giống và khác mảng object trong JavaScript ở đâu?', d:[L('PostgreSQL Tutorial','https://www.postgresqltutorial.com')]},
+ {g:'Truy vấn dữ liệu',
+  h:['<code>SELECT</code>, <code>WHERE</code>, <code>ORDER BY</code>, <code>LIMIT</code>'],
+  l:['Thêm 20 giao dịch mẫu','Viết 8 câu truy vấn: giao dịch tháng này, khoản chi lớn nhất, ...'],
+  c:'WHERE trong SQL tương ứng với hàm mảng nào trong JavaScript?', d:[L('PostgreSQL Tutorial','https://www.postgresqltutorial.com')]},
+ {g:'Thêm, sửa, xóa bằng SQL',
+  h:['<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>','Nguy hiểm của UPDATE và DELETE khi quên WHERE'],
+  l:['Thực hành trên dữ liệu mẫu','Thử trong transaction rồi ROLLBACK để thấy cách hoàn tác'],
+  c:'Chuyện gì xảy ra nếu chạy DELETE FROM transactions; mà không có WHERE?', d:[L('PostgreSQL Tutorial','https://www.postgresqltutorial.com')]},
+ {g:'Thiết kế bảng cho app',
+  h:['Khóa chính, khóa ngoại','Kiểu dữ liệu cho tiền (integer hoặc numeric) và ngày'],
+  l:['Bảng <code>categories</code> và <code>transactions</code> có khóa ngoại','Vẽ sơ đồ quan hệ ra giấy'],
+  c:'Vì sao không nên lưu tiền bằng kiểu số thực (float)?', d:[L('PostgreSQL Tutorial','https://www.postgresqltutorial.com')]},
+ {g:'JOIN và báo cáo bằng SQL',
+  h:['<code>JOIN</code>, <code>GROUP BY</code>, <code>SUM</code>, <code>HAVING</code>'],
+  l:['Tổng chi theo danh mục trong tháng','Lãi lỗ theo từng tháng','So với cách tính bằng reduce ở tuần 1'],
+  c:'Khi nào nên tính toán bằng SQL thay vì bằng JavaScript?', d:[L('PostgreSQL Tutorial','https://www.postgresqltutorial.com')]},
+ {type:'cv', g:'Bài tập SQL tổng hợp và nộp đơn đầu tiên',
+  h:['Ôn toàn bộ SQL trong tuần'],
+  l:['Tự đặt và giải 10 câu truy vấn từ dữ liệu tiệm','Nộp đơn cho 3 đến 5 công ty đầu tiên trong danh sách','Cập nhật bảng theo dõi ứng tuyển'],
+  c:'Câu truy vấn nào khó nhất với bạn? Vì sao?', d:[]}
+]},
+/* 18 */ {t:'Express, PostgreSQL và Prisma', goal:'API thật lưu dữ liệu vào database', days:[
+ {g:'Prisma: schema và migration',
+  h:['ORM là gì','<code>schema.prisma</code>, <code>prisma migrate dev</code>'],
+  l:['Cài Prisma, mô tả bảng categories và transactions trong schema','Chạy migration, kiểm tra bảng trong DBeaver'],
+  c:'Migration là gì và vì sao cần nó khi làm việc nhóm?', d:[L('Prisma: Getting started','https://www.prisma.io/docs/getting-started')]},
+ {g:'CRUD bằng Prisma',
+  h:['<code>findMany</code>, <code>create</code>, <code>update</code>, <code>delete</code>'],
+  l:['Thay mảng trong bộ nhớ bằng Prisma','Khởi động lại server, dữ liệu vẫn còn'],
+  c:'Prisma giúp bạn bớt phải viết gì so với SQL thuần?', d:[L('Prisma: CRUD','https://www.prisma.io/docs/orm/prisma-client/queries/crud')]},
+ {g:'Kiểm tra dữ liệu gửi lên',
+  h:['Không bao giờ tin dữ liệu từ client','Dùng lại Zod ở backend'],
+  l:['Kiểm tra body khi tạo và sửa giao dịch','Trả lỗi 400 kèm thông báo rõ ràng'],
+  c:'Nếu không kiểm tra ở backend, người xấu có thể làm gì?', d:[L('Zod','https://zod.dev')]},
+ {g:'Xử lý lỗi tập trung',
+  h:['Mã trạng thái HTTP: 200, 201, 400, 404, 500','Middleware xử lý lỗi của Express'],
+  l:['Một middleware xử lý mọi lỗi','Trả đúng mã trạng thái cho từng tình huống'],
+  c:'Phân biệt lỗi 4xx và 5xx.', d:[L('Express: Error handling','https://expressjs.com/en/guide/error-handling.html'), L('MDN: HTTP status','https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status')]},
+ {g:'Phân trang và lọc',
+  h:['Query params: <code>?page=1&amp;limit=20&amp;month=2027-02</code>'],
+  l:['Phân trang danh sách giao dịch','Lọc theo tháng và loại ở phía server'],
+  c:'Vì sao không nên trả về toàn bộ dữ liệu một lần?', d:[L('Prisma: Pagination','https://www.prisma.io/docs/orm/prisma-client/queries/pagination')]},
+ {g:'Nối app Next.js với API',
+  h:['CORS là gì và vì sao trình duyệt chặn'],
+  l:['Bật CORS cho địa chỉ của app','App V3 gọi API Express thay vì localStorage (bản thử nghiệm)','Theo dõi đơn ứng tuyển đã nộp'],
+  c:'Giải thích CORS bằng lời của bạn.', d:[L('MDN: CORS','https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS')]}
+]},
+/* 19 */ {t:'NestJS cơ bản (tháng phỏng vấn)', goal:'API chạy trên NestJS. Ưu tiên phỏng vấn', days:[
+ {g:'NestJS: module và controller',
+  h:['Vì sao NestJS có cấu trúc giống .NET và Spring','Module, controller, decorator'],
+  l:['Tạo dự án bằng <code>nest new</code>','Viết <code>TransactionsController</code> trả dữ liệu mẫu'],
+  c:'Decorator như @Get() làm nhiệm vụ gì?', d:[NE('First steps','first-steps'), NE('Controllers','controllers')]},
+ {g:'Service và dependency injection',
+  h:['Provider, service','Dependency injection là gì, vì sao giúp dễ test'],
+  l:['Chuyển logic sang <code>TransactionsService</code>','So sánh cấu trúc với bản Express'],
+  c:'Dependency injection giải quyết vấn đề gì?', d:[NE('Providers','providers'), NE('Modules','modules')]},
+ PV,
+ {g:'DTO và kiểm tra dữ liệu',
+  h:['DTO là gì','<code>ValidationPipe</code> và class-validator'],
+  l:['DTO cho tạo và sửa giao dịch','Bật ValidationPipe toàn cục'],
+  c:'DTO trong NestJS giống gì với Zod schema bạn đã dùng?', d:[NE('Validation','techniques/validation')]},
+ PV,
+ {g:'API giao dịch bằng NestJS và Prisma',
+  h:['Tạo <code>PrismaService</code> dùng chung'],
+  l:['Chuyển toàn bộ API giao dịch sang NestJS','Test lại bằng Postman'],
+  c:'Bạn thấy NestJS hay Express phù hợp hơn cho dự án này? Vì sao?', d:[L('Prisma: NestJS','https://www.prisma.io/docs/guides/nestjs')]}
+]},
+/* 20 */ {t:'Hoàn thiện API (tháng phỏng vấn)', goal:'App dùng API thật', days:[
+ {g:'Module danh mục',
+  h:['Quan hệ giữa các bảng trong Prisma'],
+  l:['<code>CategoriesModule</code> đầy đủ thêm, sửa, xóa','Trả giao dịch kèm tên danh mục'],
+  c:'include trong Prisma tương ứng với gì trong SQL?', d:[L('Prisma: Relation queries','https://www.prisma.io/docs/orm/prisma-client/queries/relation-queries')]},
+ PV,
+ {g:'API báo cáo',
+  h:['Tính toán tổng hợp ở database bằng <code>groupBy</code> và <code>aggregate</code>'],
+  l:['<code>GET /reports/monthly?month=2027-03</code> trả tổng thu, chi, nhập hàng, lãi lỗ, theo danh mục'],
+  c:'Báo cáo nên tính ở frontend hay backend? Vì sao?', d:[L('Prisma: Aggregation','https://www.prisma.io/docs/orm/prisma-client/queries/aggregation-grouping-summarizing')]},
+ PV,
+ {g:'Tài liệu API bằng Swagger',
+  h:['OpenAPI là gì'],
+  l:['Cài Swagger cho NestJS','Mở trang tài liệu, thử gọi API ngay trên đó'],
+  c:'Tài liệu API giúp ai, giúp như thế nào?', d:[NE('OpenAPI','openapi/introduction')]},
+ {g:'App dùng API NestJS',
+  h:['Chuyển dữ liệu thật của vợ lên server'],
+  l:['App V3 gọi API NestJS','Viết endpoint nhập dữ liệu từ file sao lưu JSON','Chuyển dữ liệu của vợ lên server (chạy trên máy bạn)'],
+  c:'Cần kiểm tra gì để chắc dữ liệu chuyển lên không bị thiếu?', d:[]}
+]},
+/* 21 */ {t:'Đăng nhập (tháng phỏng vấn)', goal:'App có đăng nhập', days:[
+ {g:'Người dùng và mã hóa mật khẩu',
+  h:['Vì sao không bao giờ lưu mật khẩu dạng chữ thường','bcrypt'],
+  l:['Bảng <code>users</code>','Mã hóa mật khẩu khi đăng ký'],
+  c:'Hash khác mã hóa (encryption) ở điểm nào?', d:[NE('Hashing','security/encryption-and-hashing')]},
+ PV,
+ {g:'Đăng ký và đăng nhập bằng JWT',
+  h:['JWT là gì, gồm những phần nào'],
+  l:['<code>POST /auth/register</code>, <code>POST /auth/login</code> trả về token'],
+  c:'Vì sao không nên để thông tin nhạy cảm trong JWT?', d:[NE('Authentication','security/authentication')]},
+ PV,
+ {g:'Bảo vệ API',
+  h:['Guard trong NestJS'],
+  l:['Mọi API giao dịch đều cần đăng nhập','Mỗi dữ liệu gắn với một tiệm, mỗi tiệm chỉ thấy dữ liệu của mình'],
+  c:'Nếu quên kiểm tra quyền sở hữu dữ liệu, chuyện gì có thể xảy ra?', d:[NE('Guards','guards')]},
+ {g:'Đăng nhập trên app',
+  h:['Lưu token ở đâu: cookie httpOnly hay localStorage, ưu và nhược điểm'],
+  l:['Trang đăng nhập','Tự chuyển về trang đăng nhập khi chưa đăng nhập hoặc token hết hạn'],
+  c:'Vì sao cookie httpOnly an toàn hơn trước tấn công XSS?', d:[L('MDN: Cookies','https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies')]}
+]},
+/* 22 */ {t:'Phân quyền và deploy (tháng phỏng vấn)', goal:'V4 chạy online', days:[
+ {g:'Phân quyền theo vai trò',
+  h:['Vai trò chủ tiệm và nhân viên','Decorator <code>@Roles()</code>'],
+  l:['Nhân viên chỉ được nhập giao dịch','Chỉ chủ tiệm xem báo cáo và xóa dữ liệu'],
+  c:'Xác thực (authentication) khác phân quyền (authorization) thế nào?', d:[NE('Authorization','security/authorization')]},
+ PV,
+ {g:'Deploy database và API',
+  h:['Database trên cloud, API trên cloud'],
+  l:['Tạo PostgreSQL trên Neon','Deploy API lên Render','Chạy migration trên database thật'],
+  c:'Vì sao không nên dùng chung database cho phát triển và chạy thật?', d:[L('Neon','https://neon.tech/docs/introduction'), L('Render','https://render.com/docs')]},
+ PV,
+ {g:'Biến môi trường và CORS',
+  h:['<code>.env</code>, không bao giờ đưa bí mật lên GitHub'],
+  l:['Cấu hình biến môi trường trên Render và Vercel','CORS chỉ cho phép địa chỉ app của bạn','Thử đầy đủ trên điện thoại'],
+  c:'Nếu lỡ đẩy file .env lên GitHub, bạn phải làm gì ngay?', d:[NE('Configuration','techniques/configuration')]},
+ {g:'V4 chính thức chạy',
+  h:['Kiểm tra toàn bộ luồng thật'],
+  l:['Tạo tài khoản cho vợ','Vợ dùng V4 thay sổ tay trong 1 tuần (vẫn ghi sổ song song)','Ghi lại mọi lỗi và góp ý'],
+  c:'Từ localStorage lên server, điều gì thay đổi với người dùng?', d:[]}
+]},
+/* 23 */ {t:'Chuẩn bị đánh giá ở công ty', goal:'Sẵn sàng cho buổi đánh giá tháng 4', days:[
+ {type:'danhgia', g:'Liệt kê việc đã làm từ tháng 10',
+  h:['Đánh giá tốt cần bằng chứng cụ thể'],
+  l:['Liệt kê các task đã làm ở công ty từ tháng 10','Đánh dấu task có cải thiện nhờ kiến thức mới hoặc nhờ AI'],
+  c:'Ba việc bạn tự hào nhất trong 6 tháng qua là gì?', d:[]},
+ {type:'danhgia', g:'Thu thập số liệu',
+  h:['Con số thuyết phục hơn lời kể'],
+  l:['Thời gian làm nhanh hơn, số lỗi giảm, phần code đã hiện đại hóa','Chụp ảnh hoặc lưu link làm bằng chứng'],
+  c:'Con số nào thể hiện rõ nhất sự tiến bộ của bạn?', d:[]},
+ {type:'danhgia', g:'Viết bản tự đánh giá',
+  h:['Ngắn gọn, một trang'],
+  l:['Viết bản tự đánh giá một trang: kết quả, kỹ năng mới, kế hoạch tiếp theo','Nhờ AI đọc và góp ý'],
+  c:'Người đọc bản tự đánh giá sẽ nhớ điều gì nhất?', d:[]},
+ {type:'danhgia', g:'Chuẩn bị câu chuyện theo STAR',
+  h:['STAR: Tình huống, Nhiệm vụ, Hành động, Kết quả'],
+  l:['Viết 3 câu chuyện theo STAR, dùng được cho cả đánh giá lẫn phỏng vấn'],
+  c:'Câu chuyện nào cho thấy bạn chủ động giải quyết vấn đề?', d:[]},
+ {type:'danhgia', g:'Chuẩn bị đề xuất cho buổi đánh giá',
+  h:['Biết mình muốn gì trước khi vào phòng'],
+  l:['Mong muốn về lương, vai trò, công nghệ','Một đề xuất cụ thể, ví dụ: thử áp dụng TypeScript cho một màn hình mới'],
+  c:'Bạn cần điều gì để muốn ở lại công ty hiện tại?', d:[]},
+ {g:'Đọc lại code backend',
+  h:['Ôn lại toàn bộ những gì đã làm'],
+  l:['Đọc lại code backend từ đầu','Ghi chỗ chưa hiểu, tra lại','Sửa lỗi theo góp ý của vợ'],
+  c:'Phần nào của backend bạn vẫn chưa tự tin giải thích?', d:[]},
+ REST('Nghỉ ngơi trước tuần đánh giá')
+]},
+/* 24 */ {t:'Tuần đánh giá', goal:'Đánh giá ở công ty và quyết định hướng đi', days:[
+ {type:'danhgia', g:'Tuần đánh giá: học nhẹ 30 phút',
+  h:['Test trong NestJS dùng Jest'],
+  l:['Đọc tài liệu testing của NestJS','Chạy thử test mẫu có sẵn'],
+  c:'Unit test khác end to end test thế nào?', d:[NE('Testing','fundamentals/testing')]},
+ {type:'danhgia', g:'Tuần đánh giá: test service giao dịch',
+  h:['Viết test cho logic quan trọng nhất'],
+  l:['Test thêm, sửa, xóa giao dịch'],
+  c:'Logic nào trong app nếu sai sẽ gây hậu quả lớn nhất?', d:[NE('Testing','fundamentals/testing')]},
+ {type:'danhgia', g:'Tuần đánh giá: test báo cáo',
+  h:['Test tính toán với dữ liệu mẫu'],
+  l:['Test lãi lỗ tháng với dữ liệu biết trước kết quả'],
+  c:'Làm sao chọn dữ liệu mẫu để test phát hiện được lỗi?', d:[]},
+ {type:'danhgia', g:'Tuần đánh giá: mock Prisma',
+  h:['Mock là gì, vì sao cần'],
+  l:['Mock PrismaService trong test'],
+  c:'Khi nào nên mock, khi nào nên test với database thật?', d:[]},
+ {type:'danhgia', g:'Tổng hợp và quyết định',
+  h:['Đặt kết quả đánh giá cạnh các cơ hội từ phỏng vấn'],
+  l:['Ghi lại kết quả đánh giá','So sánh với các offer hoặc vòng phỏng vấn đang có','Quyết định: ở lại hay chuyển việc, và vì sao'],
+  c:'Lựa chọn nào giúp bạn phát triển tốt nhất trong 2 năm tới?', d:[]},
+ REST('Nghỉ ngơi sau tuần đánh giá'),
+ SUNDAY
+]},
+/* 25 */ {t:'Chất lượng backend', goal:'Backend chắc chắn trước khi mở rộng', days:[
+ {g:'Test end to end cho API',
+  h:['Supertest: gọi API như client thật'],
+  l:['Test luồng: đăng nhập, tạo giao dịch, xem báo cáo'],
+  c:'E2E test bắt được lỗi gì mà unit test bỏ sót?', d:[NE('Testing','fundamentals/testing')]},
+ {g:'Dữ liệu mẫu (seed)',
+  h:['Seed giúp ai cũng chạy được dự án với dữ liệu có sẵn'],
+  l:['Script seed tạo danh mục và 100 giao dịch mẫu'],
+  c:'Vì sao không dùng dữ liệu thật của vợ để phát triển?', d:[L('Prisma: Seeding','https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding')]},
+ {g:'Ghi log và lỗi rõ ràng',
+  h:['Logger của NestJS','Exception filter'],
+  l:['Log mỗi request và lỗi','Thông báo lỗi trả về thống nhất một dạng'],
+  c:'Khi app lỗi lúc vợ đang dùng, bạn cần thông tin gì để tìm ra nguyên nhân?', d:[NE('Logger','techniques/logger'), NE('Exception filters','exception-filters')]},
+ {g:'Refactor theo module',
+  h:['Mỗi module một nhiệm vụ rõ ràng'],
+  l:['Sắp xếp lại thư mục backend','Xóa code thừa'],
+  c:'Module nào đang làm quá nhiều việc?', d:[]},
+ {g:'Review toàn bộ backend',
+  h:['Nhờ AI đóng vai senior review code'],
+  l:['Review từng module','Ghi lại góp ý theo mức độ quan trọng'],
+  c:'Góp ý quan trọng nhất là gì?', d:[]},
+ {g:'Sửa theo review',
+  h:['Ưu tiên lỗi bảo mật và lỗi dữ liệu trước'],
+  l:['Sửa các góp ý quan trọng','Chạy lại toàn bộ test'],
+  c:'Test có bắt được lỗi nào trong lúc bạn sửa không?', d:[]}
+]},
+/* 26 */ {t:'Thiết kế tồn kho', goal:'Thiết kế xong trước khi code', days:[
+ {g:'Tìm hiểu quy trình làm sữa chua',
+  h:['Hiểu nghiệp vụ trước khi thiết kế'],
+  l:['Hỏi vợ: nguyên liệu gì, công thức một mẻ, một mẻ ra bao nhiêu hũ, hạn dùng bao lâu','Ghi lại toàn bộ vào notes.md'],
+  c:'Điều gì trong quy trình làm bạn bất ngờ?', d:[]},
+ {g:'Học vẽ sơ đồ dữ liệu (ERD)',
+  h:['Quan hệ một nhiều, nhiều nhiều'],
+  l:['Vẽ lại các bảng hiện có trên dbdiagram.io'],
+  c:'Quan hệ nhiều nhiều cần thêm bảng gì?', d:[L('dbdiagram.io','https://dbdiagram.io')]},
+ {g:'ERD nguyên liệu và kho',
+  h:['Đơn vị tính: lít, kg, cái','Ghi nhận mọi thay đổi tồn kho thành từng dòng'],
+  l:['Bảng <code>ingredients</code>, <code>stock_movements</code> (nhập, xuất, hư hỏng)'],
+  c:'Vì sao nên lưu từng lần nhập xuất thay vì chỉ lưu số tồn hiện tại?', d:[L('dbdiagram.io','https://dbdiagram.io')]},
+ {g:'ERD sản phẩm, công thức, mẻ',
+  h:['Công thức là quan hệ nhiều nhiều giữa sản phẩm và nguyên liệu'],
+  l:['Bảng <code>products</code>, <code>recipes</code>, <code>batches</code>'],
+  c:'Nếu vợ đổi công thức, các mẻ cũ có bị ảnh hưởng không? Thiết kế đã xử lý chưa?', d:[]},
+ {g:'Review thiết kế',
+  h:['Sửa thiết kế rẻ hơn rất nhiều so với sửa code'],
+  l:['Nhờ AI review ERD','Đi qua một ngày bán hàng thật trên giấy để kiểm tra'],
+  c:'Có tình huống thật nào thiết kế chưa xử lý được?', d:[]},
+ {g:'Tài liệu nghiệp vụ',
+  h:['Viết tài liệu cho chính mình sau này'],
+  l:['Viết <code>docs/ton-kho.md</code>: thuật ngữ, quy trình, các bảng, quy tắc tính toán'],
+  c:'Người mới đọc tài liệu này có hiểu được cách tiệm vận hành không?', d:[]}
+]},
+/* 27 */ {t:'Nhập kho', goal:'Theo dõi được nguyên liệu nhập vào', days:[
+ {g:'Tạo bảng tồn kho',
+  h:['Migration cho bảng mới'],
+  l:['Migration <code>ingredients</code>, <code>stock_movements</code>','Seed danh sách nguyên liệu'],
+  c:'Migration mới có ảnh hưởng dữ liệu cũ không?', d:[]},
+ {g:'API nhập kho',
+  h:['Transaction trong database: nhiều thao tác thành công cùng nhau hoặc thất bại cùng nhau'],
+  l:['Tạo phiếu nhập: thêm dòng nhập kho cho từng nguyên liệu trong một transaction'],
+  c:'Nếu lưu được nửa phiếu nhập rồi lỗi, chuyện gì xảy ra khi không dùng transaction?', d:[L('Prisma: Transactions','https://www.prisma.io/docs/orm/prisma-client/queries/transactions')]},
+ {g:'Phiếu nhập tạo giao dịch chi',
+  h:['Nối tồn kho với thu chi'],
+  l:['Mỗi phiếu nhập tự tạo một giao dịch “Nhập hàng”','Không cần nhập hai lần'],
+  c:'Vì sao không nên bắt người dùng nhập cùng một thông tin hai lần?', d:[]},
+ {g:'Trang Nguyên liệu',
+  h:['Áp dụng lại kiến thức frontend'],
+  l:['Danh sách nguyên liệu, đơn vị, số tồn hiện tại'],
+  c:'Thông tin nào trên trang này vợ cần xem nhanh nhất?', d:[]},
+ REST('Nghỉ lễ 30/4'),
+ REST('Nghỉ lễ 1/5'),
+ {g:'Trang Nhập kho',
+  h:['Form có nhiều dòng (nhiều nguyên liệu)'],
+  l:['Form phiếu nhập nhiều nguyên liệu: tên, số lượng, đơn giá','Tổng tiền tự tính'],
+  c:'Form nhiều dòng khó hơn form thường ở đâu?', d:[L('React Hook Form: useFieldArray','https://react-hook-form.com/docs/usefieldarray')]}
+]},
+/* 28 */ {t:'Sản xuất và xuất kho', goal:'Làm một mẻ thì tự trừ nguyên liệu', days:[
+ {g:'Công thức',
+  h:['Lưu công thức cho một mẻ'],
+  l:['API và trang quản lý công thức cho từng loại sữa chua'],
+  c:'Công thức nên lưu theo một mẻ hay theo một hũ? Vì sao?', d:[]},
+ {g:'Mẻ sản xuất',
+  h:['Bảng <code>batches</code>: ngày làm, sản phẩm, số hũ'],
+  l:['API tạo mẻ sản xuất'],
+  c:'Một mẻ cần lưu những thông tin gì?', d:[]},
+ {g:'Tự trừ nguyên liệu',
+  h:['Dùng transaction để trừ nhiều nguyên liệu cùng lúc'],
+  l:['Tạo mẻ thì tự sinh các dòng xuất kho theo công thức','Báo lỗi nếu không đủ nguyên liệu'],
+  c:'Có nên cho phép tồn kho âm không? Hỏi ý kiến vợ.', d:[]},
+ {g:'Cảnh báo sắp hết',
+  h:['Mức tồn tối thiểu cho từng nguyên liệu'],
+  l:['Hiện cảnh báo khi nguyên liệu dưới mức tối thiểu'],
+  c:'Mức tối thiểu nên do ai đặt?', d:[]},
+ {g:'Trang Tồn kho',
+  h:['Hiển thị số tồn và lịch sử'],
+  l:['Trang tồn kho hiện tại','Bấm vào nguyên liệu xem lịch sử nhập xuất'],
+  c:'Trang này giúp vợ ra quyết định gì?', d:[]},
+ {g:'Vợ dùng thử',
+  h:['Kiểm tra với dữ liệu thật'],
+  l:['Vợ nhập một tuần thật','So số tồn trên app với số đếm thực tế'],
+  c:'Số trên app và số thực tế có khớp không? Nếu lệch, vì sao?', d:[]}
+]},
+/* 29 */ {t:'Giá vốn và lãi mỗi hũ', goal:'Biết chính xác mỗi hũ lãi bao nhiêu', days:[
+ {g:'Cách tính giá vốn',
+  h:['Giá vốn bình quân gia quyền'],
+  l:['Tính tay ví dụ: 2 lần nhập sữa với giá khác nhau','Viết ra công thức'],
+  c:'Vì sao không thể lấy giá của lần nhập gần nhất làm giá vốn?', d:[]},
+ {g:'API giá vốn',
+  h:['Tính giá vốn một mẻ từ công thức và giá nguyên liệu'],
+  l:['API trả giá vốn một mẻ và giá vốn mỗi hũ','Viết test với số liệu đã tính tay'],
+  c:'Test này giúp bạn tin kết quả ở điểm nào?', d:[]},
+ {g:'Sản phẩm và giá bán',
+  h:['Giá bán lẻ và giá bán sỉ'],
+  l:['Bảng sản phẩm có giá lẻ, giá sỉ','Trang quản lý sản phẩm'],
+  c:'Một sản phẩm có nhiều mức giá thì nên lưu thế nào?', d:[]},
+ {g:'Lãi gộp',
+  h:['Lãi gộp bằng giá bán trừ giá vốn'],
+  l:['Tính lãi gộp mỗi hũ, mỗi loại, theo giá lẻ và giá sỉ'],
+  c:'Loại sữa chua nào lãi nhiều nhất? Có đúng như vợ nghĩ không?', d:[]},
+ {g:'Hiển thị lãi theo loại',
+  h:['Trình bày số liệu dễ hiểu'],
+  l:['Bảng và biểu đồ lãi theo từng loại sữa chua'],
+  c:'Con số này có thể giúp tiệm thay đổi quyết định nào?', d:[]},
+ {g:'Kiểm tra cùng vợ',
+  h:['Đối chiếu với kinh nghiệm thực tế'],
+  l:['Ngồi xem số liệu cùng vợ','Ghi lại chỗ chưa hợp lý'],
+  c:'Vợ có tin con số app đưa ra không? Nếu chưa, thiếu gì?', d:[]}
+]},
+/* 30 */ {t:'Hạn dùng và hàng hư hỏng', goal:'Giảm hao hụt', days:[
+ {g:'Hạn dùng cho mẻ',
+  h:['Ngày sản xuất và hạn dùng'],
+  l:['Thêm hạn dùng cho từng mẻ, tự tính theo số ngày của từng loại'],
+  c:'Hạn dùng nên tính tự động hay để người dùng nhập?', d:[]},
+ {g:'Ghi nhận hàng hư hỏng',
+  h:['Hư hỏng cũng là một loại xuất kho'],
+  l:['API và form ghi nhận hũ hư hỏng, có lý do'],
+  c:'Lý do hư hỏng giúp gì cho việc cải thiện?', d:[]},
+ {g:'Báo cáo hao hụt',
+  h:['Tỷ lệ hao hụt'],
+  l:['Báo cáo số hũ và số tiền hao hụt theo tháng, theo lý do'],
+  c:'Tỷ lệ hao hụt bao nhiêu thì đáng lo?', d:[]},
+ {g:'Tác vụ chạy định kỳ',
+  h:['NestJS Schedule: chạy việc theo lịch'],
+  l:['Mỗi sáng kiểm tra mẻ sắp hết hạn, lưu thành thông báo'],
+  c:'Việc nào nữa trong tiệm có thể tự động hóa theo lịch?', d:[NE('Task scheduling','techniques/task-scheduling')]},
+ {g:'Trang hạn dùng và hư hỏng',
+  h:['Ưu tiên thông tin khẩn cấp'],
+  l:['Danh sách mẻ sắp hết hạn ở đầu trang Tổng quan','Trang lịch sử hư hỏng'],
+  c:'Làm sao để vợ không bỏ sót cảnh báo?', d:[]},
+ {g:'Vợ dùng thử',
+  h:['Kiểm tra với dữ liệu thật'],
+  l:['Dùng trong một tuần, ghi góp ý'],
+  c:'Tính năng này có thật sự giúp giảm hàng hư không?', d:[]}
+]},
+/* 31 */ {t:'Khách sỉ và công nợ', goal:'Biết ai đang nợ bao nhiêu', days:[
+ {g:'Khách hàng sỉ',
+  h:['Bảng <code>customers</code>'],
+  l:['API và trang quản lý khách sỉ'],
+  c:'Cần lưu những thông tin gì của khách sỉ?', d:[]},
+ {g:'Đơn bán sỉ',
+  h:['Tách trạng thái giao hàng và trạng thái thanh toán (như Haravan)'],
+  l:['Đơn bán sỉ có nhiều sản phẩm','Hai trạng thái riêng: giao hàng và thanh toán'],
+  c:'Vì sao gộp chung một cột trạng thái sẽ gây khó khăn?', d:[]},
+ {g:'Thu nợ từng phần',
+  h:['Một đơn có thể được trả nhiều lần'],
+  l:['Bảng các lần thanh toán','Mỗi lần thu tiền tự tạo giao dịch thu'],
+  c:'Số nợ còn lại nên lưu sẵn hay tính mỗi lần cần?', d:[]},
+ {g:'Báo cáo công nợ',
+  h:['Tổng hợp theo khách hàng'],
+  l:['Ai đang nợ, nợ bao nhiêu, nợ từ ngày nào'],
+  c:'Khoản nợ bao lâu thì cần nhắc khách?', d:[]},
+ {g:'Trang Khách hàng và Công nợ',
+  h:['Thiết kế cho thao tác nhanh'],
+  l:['Trang công nợ, nút ghi nhận thanh toán nhanh'],
+  c:'Thao tác nào vợ làm nhiều nhất trên trang này?', d:[]},
+ {g:'Vợ dùng thử',
+  h:['Kiểm tra với dữ liệu thật'],
+  l:['Nhập công nợ hiện tại của tiệm, đối chiếu sổ'],
+  c:'Số công nợ trên app có khớp với sổ không?', d:[]}
+]},
+/* 32 */ {t:'Báo cáo tổng hợp', goal:'Hoàn thành V5', days:[
+ {g:'Báo cáo lãi lỗ tháng',
+  h:['Doanh thu, giá vốn, chi phí, lãi ròng'],
+  l:['API và trang báo cáo lãi lỗ đầy đủ'],
+  c:'Lãi gộp khác lãi ròng thế nào?', d:[]},
+ {g:'Tối ưu truy vấn',
+  h:['Index là gì, khi nào cần','<code>EXPLAIN ANALYZE</code>'],
+  l:['Tạo nhiều dữ liệu giả, đo thời gian báo cáo','Thêm index, đo lại'],
+  c:'Index giúp đọc nhanh hơn, vậy nó làm chậm việc gì?', d:[L('PostgreSQL Tutorial: Indexes','https://www.postgresqltutorial.com/postgresql-indexes/')]},
+ {g:'Xuất Excel',
+  h:['Tạo file Excel ở backend'],
+  l:['Xuất báo cáo tháng ra file Excel có định dạng'],
+  c:'Xuất file nên làm ở frontend hay backend? Vì sao?', d:[L('ExcelJS','https://github.com/exceljs/exceljs')]},
+ {g:'Dashboard tổng hợp',
+  h:['Tổng hợp mọi thứ trên một màn hình'],
+  l:['Thu chi, tồn kho, sắp hết hạn, công nợ trên trang Tổng quan'],
+  c:'Nếu chỉ được hiện 4 con số, bạn chọn những số nào?', d:[]},
+ {g:'Sửa lỗi',
+  h:['Ưu tiên lỗi ảnh hưởng số liệu'],
+  l:['Sửa các lỗi tồn đọng','Chạy lại toàn bộ test'],
+  c:'Lỗi nào khó tìm nhất trong giai đoạn này?', d:[]},
+ {g:'Hoàn thành V5',
+  h:['Nhìn lại toàn bộ hệ thống'],
+  l:['Cập nhật README với các tính năng mới','Đưa vợ dùng bản hoàn chỉnh'],
+  c:'Hệ thống này đã thay đổi cách vận hành tiệm như thế nào?', d:[]},
+ {type:'on', g:'Tổng kết giai đoạn 5',
+  h:['Nhìn lại từ thu chi đơn giản đến hệ thống quản lý tiệm'],
+  l:['Viết nhật ký','Chụp ảnh màn hình các tính năng cho portfolio'],
+  c:'Bài học lớn nhất về thiết kế dữ liệu là gì?', d:[]}
+]},
+/* 33 */ {t:'Docker', goal:'Chạy cả hệ thống bằng một lệnh', days:[
+ {g:'Docker là gì',
+  h:['Image, container','Vì sao “máy tôi chạy được” không còn là vấn đề'],
+  l:['Cài Docker Desktop','Chạy thử container PostgreSQL'],
+  c:'Container khác máy ảo ở đâu?', d:[L('Docker: Get started','https://docs.docker.com/get-started/')]},
+ {g:'Dockerfile cho API',
+  h:['Các lệnh <code>FROM</code>, <code>COPY</code>, <code>RUN</code>, <code>CMD</code>'],
+  l:['Viết Dockerfile cho API NestJS','Build và chạy'],
+  c:'Vì sao nên copy package.json và cài thư viện trước khi copy code?', d:[L('Docker: Dockerfile','https://docs.docker.com/reference/dockerfile/')]},
+ {g:'docker compose',
+  h:['Chạy nhiều container cùng nhau'],
+  l:['File <code>compose.yaml</code>: API và PostgreSQL'],
+  c:'Các container nói chuyện với nhau bằng cách nào?', d:[L('Docker Compose','https://docs.docker.com/compose/')]},
+ {g:'Dockerfile cho app Next.js',
+  h:['Build nhiều tầng (multi-stage)'],
+  l:['Dockerfile cho app Next.js','Thêm vào compose'],
+  c:'Multi-stage build giúp gì?', d:[L('Next.js: Deploying','https://nextjs.org/docs/app/getting-started/deploying')]},
+ {g:'Một lệnh chạy tất cả',
+  h:['Kiểm tra trên máy sạch'],
+  l:['<code>docker compose up</code> chạy toàn bộ hệ thống','Thử xóa hết rồi chạy lại từ đầu'],
+  c:'Người khác clone repo về cần làm những bước gì?', d:[]},
+ {g:'README hướng dẫn chạy',
+  h:['Tài liệu cho người khác dùng dự án'],
+  l:['Hướng dẫn chạy bằng Docker và không cần Docker'],
+  c:'Một người lạ có làm theo được README mà không cần hỏi bạn không?', d:[]}
+]},
+/* 34 */ {t:'CI/CD và chất lượng', goal:'Tự động kiểm tra và deploy', days:[
+ {g:'GitHub Actions',
+  h:['CI là gì','Workflow, job, step'],
+  l:['Workflow chạy lint và test mỗi lần push'],
+  c:'CI giúp gì khi làm việc nhóm?', d:[L('GitHub Actions','https://docs.github.com/en/actions')]},
+ {g:'Tự động deploy',
+  h:['CD: deploy khi merge vào nhánh chính'],
+  l:['Chỉ deploy khi test đều qua'],
+  c:'Vì sao không nên deploy khi test đang lỗi?', d:[L('GitHub Actions','https://docs.github.com/en/actions')]},
+ {g:'Test end to end bằng Playwright',
+  h:['Test như người dùng thật bấm trên trình duyệt'],
+  l:['Test luồng: đăng nhập, nhập giao dịch, xem báo cáo'],
+  c:'Playwright test khác test API ở đâu?', d:[L('Playwright','https://playwright.dev/docs/intro')]},
+ {g:'Theo dõi lỗi khi chạy thật',
+  h:['Biết lỗi trước khi người dùng báo'],
+  l:['Xem log trên Render','Thử gắn một công cụ theo dõi lỗi bản miễn phí'],
+  c:'Làm sao biết app đang lỗi khi vợ không báo?', d:[]},
+ {g:'Bảo mật cơ bản',
+  h:['OWASP Top 10','helmet, giới hạn số request'],
+  l:['Thêm helmet và rate limit cho API','Đọc OWASP Top 10, đối chiếu với app'],
+  c:'Lỗ hổng nào trong OWASP Top 10 app của bạn dễ mắc nhất?', d:[L('OWASP Top 10','https://owasp.org/www-project-top-ten/'), NE('Rate limiting','security/rate-limiting')]},
+ {g:'Review toàn hệ thống',
+  h:['Nhìn từ góc độ một senior'],
+  l:['Nhờ AI review kiến trúc, bảo mật, hiệu năng','Ghi lại kế hoạch cải thiện'],
+  c:'Nếu có thêm 1 tháng, bạn sẽ cải thiện điều gì đầu tiên?', d:[]}
+]},
+/* 35 */ {t:'Portfolio và system design', goal:'Kể được câu chuyện dự án thuyết phục', days:[
+ {type:'cv', g:'Sơ đồ kiến trúc',
+  h:['Vẽ hệ thống từ trình duyệt đến database'],
+  l:['Sơ đồ: app Next.js, API NestJS, PostgreSQL, deploy ở đâu','Đưa vào README'],
+  c:'Giải thích kiến trúc trong 1 phút được không?', d:[]},
+ {type:'cv', g:'Viết case study',
+  h:['Vấn đề, giải pháp, kết quả'],
+  l:['Tiệm gặp khó khăn gì, app giải quyết thế nào','Kết quả thật: vợ dùng bao lâu, tiết kiệm được gì'],
+  c:'Con số nào thể hiện rõ nhất giá trị của app?', d:[]},
+ {type:'cv', g:'System design cơ bản',
+  h:['Cache, scale, load balancer, queue ở mức khái niệm'],
+  l:['Đọc tài liệu system design cơ bản','Trả lời: nếu 1.000 tiệm cùng dùng app thì cần thay đổi gì?'],
+  c:'Điểm nghẽn đầu tiên khi app có nhiều người dùng là gì?', d:[L('System Design Primer','https://github.com/donnemartin/system-design-primer')]},
+ {type:'cv', g:'Ôn câu hỏi Node.js và NestJS',
+  h:['Event loop phía server, middleware, DI, guard, pipe'],
+  l:['Tự nói thành lời từng chủ đề','Nhờ AI hỏi vặn'],
+  c:'Vì sao Node.js xử lý được nhiều request dù chỉ có một luồng chính?', d:[]},
+ {type:'cv', g:'Ôn câu hỏi SQL và database',
+  h:['JOIN, index, transaction, chuẩn hóa dữ liệu'],
+  l:['Giải 5 bài SQL bấm giờ','Giải thích transaction bằng ví dụ phiếu nhập kho'],
+  c:'Khi nào nên phá vỡ chuẩn hóa dữ liệu?', d:[]},
+ {type:'cv', g:'Phỏng vấn thử',
+  h:['Luyện như thật'],
+  l:['Nhờ AI phỏng vấn thử 45 phút cho vị trí Full Stack','Ghi lại câu trả lời chưa tốt'],
+  c:'Phần nào bạn cần luyện thêm nhiều nhất?', d:[]}
+]},
+/* 36 */ {t:'Về đích', goal:'Ứng tuyển Full Stack', days:[
+ {type:'cv', g:'Cập nhật CV Full Stack',
+  h:['Định vị lại bản thân: Full Stack Developer'],
+  l:['Cập nhật CV, LinkedIn, ITviec','Thêm dự án và case study'],
+  c:'CV bây giờ khác CV tháng 1 ở điểm nào?', d:[]},
+ {type:'cv', g:'Ứng tuyển và luyện tập',
+  h:['Nộp đơn có chọn lọc'],
+  l:['Nộp đơn vị trí Full Stack phù hợp','Ôn lại 1 chủ đề yếu'],
+  c:'Công ty nào bạn muốn vào nhất? Vì sao?', d:[]},
+ {type:'cv', g:'Ứng tuyển và luyện tập',
+  h:['Theo dõi tiến độ ứng tuyển'],
+  l:['Cập nhật bảng theo dõi','Luyện 1 bài live coding'],
+  c:'Bạn đã cải thiện thế nào sau mỗi lần phỏng vấn?', d:[]},
+ {type:'cv', g:'Ứng tuyển và luyện tập',
+  h:['Chuẩn bị câu hỏi để hỏi lại nhà tuyển dụng'],
+  l:['Nộp thêm đơn','Ôn lại câu chuyện dự án'],
+  c:'Câu hỏi nào giúp bạn hiểu rõ môi trường làm việc của công ty?', d:[]},
+ {type:'cv', g:'Ứng tuyển và luyện tập',
+  h:['Đàm phán lương: biết giá trị của mình'],
+  l:['Tìm hiểu mức lương thị trường cho vị trí Full Stack','Chuẩn bị con số mong muốn'],
+  c:'Mức lương nào bạn sẵn sàng nhận, và vì sao?', d:[L('ITviec: Báo cáo lương IT','https://itviec.com/blog/bao-cao-luong-it')]},
+ {g:'Tổng kết 9 tháng',
+  h:['Nhìn lại cả hành trình'],
+  l:['Đọc lại toàn bộ notes.md từ tuần 1','Lên kế hoạch tiếp: trang admin cho duanraucau.com hoặc học thêm .NET'],
+  c:'Bạn của tháng 10/2026 sẽ nghĩ gì khi thấy bạn hôm nay?', d:[]},
+ {type:'on', g:'Ăn mừng',
+  h:[],
+  l:['Ăn mừng cùng gia đình. Bạn đã làm được rồi!'],
+  c:'', d:[]}
+]}
+];
+</script>
+<script>
+(function(){
+  const START = new Date(2026, 9, 19);
+  const DAY_NAMES = ['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ nhật'];
+  const SHORT = ['T2','T3','T4','T5','T6','T7','CN'];
+  const TOTAL_DAYS = WEEKS.length * 7;
+  const STORE = 'lo-trinh-fullstack-done';
+  const MS = 86400000;
+
+  const pad = n => String(n).padStart(2,'0');
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const iso = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  const vn = d => pad(d.getDate()) + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear();
+  const vnShort = d => pad(d.getDate()) + '/' + pad(d.getMonth()+1);
+  const midnight = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const esc = s => String(s).replace(/&(?![a-z#0-9]+;)/gi,'&amp;').replace(/"/g,'&quot;');
+
+  function getToday(){
+    const p = new URLSearchParams(location.search).get('date');
+    if (p && /^\d{4}-\d{2}-\d{2}$/.test(p)) { const [y,m,d] = p.split('-').map(Number); return new Date(y, m-1, d); }
+    return midnight(new Date());
+  }
+  const TODAY = getToday();
+  const todayIndex = Math.round((TODAY - START) / MS);
+
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch(e) { done = {}; }
+  function saveDone(){ try { localStorage.setItem(STORE, JSON.stringify(done)); } catch(e) {} }
+
+  function getDay(w, i){
+    const wk = WEEKS[w];
+    if (wk.rest) return {type:'nghi', g:wk.rest, h:[], l:['Nghỉ ngơi, dành thời gian cho gia đình. Nghỉ cũng là một phần của lộ trình.'], c:'', d:[]};
+    return wk.days[i] || SUNDAY;
+  }
+  function phaseOf(w){ return PHASES.find(p => w+1 >= p.w[0] && w+1 <= p.w[1]); }
+  function countsForProgress(day){ return day.type !== 'nghi'; }
+
+  let totalTasks = 0;
+  for (let w = 0; w < WEEKS.length; w++) for (let i = 0; i < 7; i++) if (countsForProgress(getDay(w,i))) totalTasks++;
+
+  function updateProgress(){
+    let n = 0;
+    for (let w = 0; w < WEEKS.length; w++) for (let i = 0; i < 7; i++) {
+      const key = iso(addDays(START, w*7+i));
+      if (done[key] && countsForProgress(getDay(w,i))) n++;
+    }
+    document.getElementById('progressText').textContent = 'Đã xong ' + n + '/' + totalTasks + ' buổi';
+    document.getElementById('progressBar').style.width = (n / totalTasks * 100).toFixed(1) + '%';
+  }
+
+  const TAGS = {pv:['Phỏng vấn',''], nghi:['Ngày nghỉ','rest'], cv:['CV và phỏng vấn',''], danhgia:['Đánh giá ở công ty',''], on:['Ôn tập','rest']};
+
+  function dayCard(w, i, opts){
+    const day = getDay(w, i);
+    const date = addDays(START, w*7+i);
+    const key = iso(date);
+    const id = 'chk-' + key + (opts && opts.prefix ? '-' + opts.prefix : '');
+    let html = '<div class="day-card">';
+    html += '<h3 class="day-goal"><span>' + day.g + '</span></h3>';
+    if (day.type && TAGS[day.type]) html += '<span class="tag ' + TAGS[day.type][1] + '">' + TAGS[day.type][0] + '</span>';
+    if (day.h && day.h.length) html += '<div class="blk"><h4>Học</h4><ul>' + day.h.map(x => '<li>' + x + '</li>').join('') + '</ul></div>';
+    if (day.l && day.l.length) html += '<div class="blk"><h4>Làm</h4><ol>' + day.l.map(x => '<li>' + x + '</li>').join('') + '</ol></div>';
+    if (day.c) html += '<div class="blk"><h4>Tự kiểm tra</h4><p class="check-q hand">' + day.c + '</p></div>';
+    if (day.d && day.d.length) html += '<div class="blk docs"><h4>Tài liệu</h4>' + day.d.map(x => '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + x[0] + '</a>').join('') + '</div>';
+    if (countsForProgress(day)) {
+      html += '<div class="done-row' + (done[key] ? ' is-done' : '') + '"><input type="checkbox" id="' + id + '" data-key="' + key + '"' + (done[key] ? ' checked' : '') + '><label for="' + id + '">' + (done[key] ? 'Đã xong buổi này' : 'Đánh dấu đã xong') + '</label></div>';
+    }
+    return html + '</div>';
+  }
+
+  function nextMilestone(){
+    for (const [d, t] of MILESTONES) {
+      const [y,m,dd] = d.split('-').map(Number);
+      const md = new Date(y, m-1, dd);
+      const diff = Math.round((md - TODAY) / MS);
+      if (diff >= 0) return diff === 0 ? 'Mốc hôm nay: ' + t : 'Mốc tiếp theo: ' + t + ', còn ' + diff + ' ngày (' + vn(md) + ')';
+    }
+    return '';
+  }
+
+  function renderToday(){
+    const el = document.getElementById('today');
+    let html = '';
+    if (todayIndex < 0) {
+      const n = -todayIndex;
+      html += '<h1 class="today-date hand">Còn ' + n + ' ngày nữa là bắt đầu</h1>';
+      html += '<p class="today-meta">Buổi đầu tiên: Thứ Hai, ' + vn(START) + '</p>';
+      html += '<p class="milestone hand">' + nextMilestone() + '</p>';
+      html += '<div class="prep"><h3>Việc nên làm trước khi bắt đầu</h3><p>Ngồi với vợ khoảng 30 phút, hỏi và ghi lại:</p><ul>' + PREP.map(x => '<li>' + x + '</li>').join('') + '</ul></div>';
+      html += '<p class="today-meta">Xem trước buổi đầu tiên:</p>' + dayCard(0, 0, {prefix:'hero'});
+    } else if (todayIndex >= TOTAL_DAYS) {
+      html += '<h1 class="today-date hand">Hoàn thành lộ trình!</h1>';
+      html += '<p class="today-meta">Lộ trình kết thúc ngày 04/07/2027. Hãy đọc lại notes.md và lên kế hoạch cho chặng tiếp theo.</p>';
+    } else {
+      const w = Math.floor(todayIndex / 7), i = todayIndex % 7;
+      const ph = phaseOf(w);
+      html += '<h1 class="today-date hand">' + DAY_NAMES[i] + ', ' + vn(TODAY) + '</h1>';
+      html += '<p class="today-meta">Tuần ' + (w+1) + '/' + WEEKS.length + ': ' + WEEKS[w].t + '. ' + ph.n + (ph.n !== ph.name ? ': ' + ph.name : '') + '</p>';
+      html += '<p class="milestone hand">' + nextMilestone() + '</p>';
+      const missed = missedDays();
+      if (missed.length) {
+        html += '<div class="missed"><h3>Còn ' + missed.length + ' buổi chưa xong</h3><p>Không sao cả. Cứ làm buổi hôm nay trước, bù vào Chủ nhật hoặc tuần dự phòng 25/01 đến 31/01.</p><ul>';
+        html += missed.slice(0, 5).map(m => '<li><button type="button" data-goto="' + m.idx + '">' + SHORT[m.idx % 7] + ' ' + vnShort(m.date) + ': ' + m.g + '</button></li>').join('');
+        if (missed.length > 5) html += '<li>và ' + (missed.length - 5) + ' buổi khác</li>';
+        html += '</ul></div>';
+      }
+      html += dayCard(w, i, {prefix:'hero'});
+    }
+    el.innerHTML = html;
+  }
+
+  function missedDays(){
+    const out = [];
+    const last = Math.min(todayIndex, TOTAL_DAYS);
+    for (let idx = 0; idx < last; idx++) {
+      const w = Math.floor(idx / 7), i = idx % 7, day = getDay(w, i), date = addDays(START, idx);
+      if (countsForProgress(day) && !done[iso(date)]) out.push({idx, date, g: day.g});
+    }
+    return out;
+  }
+
+  function renderPhases(){
+    const cur = todayIndex < 0 ? -1 : Math.floor(todayIndex / 7) + 1;
+    document.getElementById('phases').innerHTML = PHASES.map(p => {
+      const from = addDays(START, (p.w[0]-1)*7), to = addDays(START, p.w[1]*7 - 1);
+      let cls = '';
+      if (cur >= p.w[0] && cur <= p.w[1]) cls = 'now';
+      else if (cur > p.w[1]) cls = 'past';
+      return '<li class="' + cls + '"><span class="when">' + vnShort(from) + ' đến ' + vnShort(to) + '</span><span class="name">' + p.n + (p.n !== p.name ? ': ' + p.name : '') + '</span></li>';
+    }).join('');
+  }
+
+  let selWeek = todayIndex < 0 ? 0 : Math.min(Math.floor(todayIndex / 7), WEEKS.length - 1);
+
+  function renderWeek(){
+    const w = selWeek, wk = WEEKS[w];
+    const from = addDays(START, w*7), to = addDays(START, w*7+6);
+    let html = '<div class="week-head"><h3>Tuần ' + (w+1) + ': ' + wk.t + '</h3><p>' + vn(from) + ' đến ' + vn(to) + '. Mục tiêu: ' + wk.goal + '</p></div>';
+    for (let i = 0; i < 7; i++) {
+      const idx = w*7+i, date = addDays(START, idx), key = iso(date), day = getDay(w, i);
+      const isToday = idx === todayIndex;
+      const st = done[key] && countsForProgress(day) ? 'Đã xong' : '';
+      html += '<details class="day' + (isToday ? ' is-today' : '') + '"' + (isToday ? ' open' : '') + '>';
+      html += '<summary><span class="d">' + SHORT[i] + ' ' + vnShort(date) + (isToday ? ', hôm nay' : '') + '</span><span class="g">' + day.g + '</span><span class="st">' + st + '</span></summary>';
+      html += '<div class="inner">' + dayCard(w, i, {prefix:'wk'}) + '</div></details>';
+    }
+    document.getElementById('weekView').innerHTML = html;
+    document.getElementById('weekSelect').value = String(w);
+    document.getElementById('prevWeek').disabled = w === 0;
+    document.getElementById('nextWeek').disabled = w === WEEKS.length - 1;
+  }
+
+  function fillSelect(){
+    document.getElementById('weekSelect').innerHTML = WEEKS.map((wk, w) =>
+      '<option value="' + w + '">Tuần ' + (w+1) + ' (' + vnShort(addDays(START, w*7)) + '): ' + wk.t + '</option>').join('');
+  }
+
+  function renderAll(){ renderToday(); renderWeek(); updateProgress(); }
+
+  document.addEventListener('change', e => {
+    const t = e.target;
+    if (t.matches('input[type="checkbox"][data-key]')) {
+      if (t.checked) done[t.dataset.key] = true; else delete done[t.dataset.key];
+      saveDone();
+      const openIdx = [...document.querySelectorAll('#weekView details.day')].map(d => d.open);
+      renderAll();
+      document.querySelectorAll('#weekView details.day').forEach((d, k) => { d.open = openIdx[k]; });
+      const again = document.getElementById(t.id);
+      if (again) again.focus();
+    }
+  });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-goto]');
+    if (!b) return;
+    const idx = Number(b.dataset.goto);
+    selWeek = Math.floor(idx / 7); renderWeek();
+    const det = document.querySelectorAll('#weekView details.day')[idx % 7];
+    if (det) { det.open = true; det.scrollIntoView({block:'start'}); det.querySelector('summary').focus(); }
+  });
+  document.getElementById('weekSelect').addEventListener('change', e => { selWeek = Number(e.target.value); renderWeek(); });
+  document.getElementById('prevWeek').addEventListener('click', () => { if (selWeek > 0) { selWeek--; renderWeek(); } });
+  document.getElementById('nextWeek').addEventListener('click', () => { if (selWeek < WEEKS.length - 1) { selWeek++; renderWeek(); } });
+  document.getElementById('thisWeek').addEventListener('click', () => { selWeek = todayIndex < 0 ? 0 : Math.min(Math.floor(todayIndex / 7), WEEKS.length - 1); renderWeek(); });
+  document.getElementById('copyJournal').addEventListener('click', e => {
+    const text = document.getElementById('journalTpl').textContent;
+    const btn = e.currentTarget;
+    const ok = () => { btn.textContent = 'Đã sao chép'; setTimeout(() => btn.textContent = 'Sao chép mẫu', 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok, () => {}); 
+  });
+
+  document.getElementById('prepList').innerHTML = PREP.map(x => '<li>' + x + '</li>').join('');
+  fillSelect(); renderPhases(); renderAll();
+})();
+</script>
+</body>
+</html>
