@@ -44,3 +44,53 @@ console.log(`#${giaodich2.id} | ${giaodich2.type} | ${giaodich2.amount} | ${giao
 console.log(`#${giaodich3.id} | ${giaodich3.type} | ${giaodich3.amount} | ${giaodich3.category} | ${giaodich3.note} | ${giaodich3.date}`);
 console.log(`#${giaodich4.id} | ${giaodich4.type} | ${giaodich4.amount} | ${giaodich4.category} | ${giaodich4.note} | ${giaodich4.date}`);
 console.log(`#${giaodich5.id} | ${giaodich5.type} | ${giaodich5.amount} | ${giaodich5.category} | ${giaodich5.note} | ${giaodich5.date}`);
+
+
+
+let sum = (a, b) => a + b;
+console.log(sum(giaodich1.amount, giaodich2.amount));
+
+
+function checkAge(age) {
+    return age > 18 ? true : confirm("Bạn có đồng ý không?");
+}
+
+function checkPermission() {
+    return permission || confirm("Bạn có đồng ý không?");
+}
+
+function min(a, b) {
+    return a < b ? a : b;
+}
+
+function formatMoney(amount, currency = "đ") {
+    return amount.toLocaleString() + " " + currency;
+}
+
+console.log(formatMoney(giaodich1.amount));
+console.log(formatMoney(giaodich2.amount));
+console.log(formatMoney(giaodich3.amount));
+console.log(formatMoney(giaodich4.amount));
+console.log(formatMoney(giaodich5.amount));
+
+function formatDate(date) {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+console.log(formatDate(giaodich1.date));
+console.log(formatDate(giaodich2.date));
+console.log(formatDate(giaodich3.date));
+console.log(formatDate(giaodich4.date));
+console.log(formatDate(giaodich5.date));
+
+function getTypeLabel(type) {
+    return type === "income" ? "Thu nhập" : "Chi tiêu";
+}
+console.log(getTypeLabel(giaodich1.type));
+console.log(getTypeLabel(giaodich2.type));
+console.log(getTypeLabel(giaodich3.type));
+console.log(getTypeLabel(giaodich4.type));
+console.log(getTypeLabel(giaodich5.type));
