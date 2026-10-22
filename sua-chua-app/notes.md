@@ -13,3 +13,8 @@ Không thể gọi bằng new (không dùng làm constructor)
 Ngày 3: Thêm, sửa, xóa giao dịch
 Hỏi: Vì sao nên tạo mảng mới thay vì sửa trực tiếp mảng cũ? 
 Trả lời: Sửa trực tiếp sẽ làm các function chỗ khác bị ảnh hưởng nếu sử dụng. Mảng mới giúp code dễ đoán và giữ được dữ liệu cũ.(Tốt cho việc dùng React)
+
+Ngày 4: Tính tổng thu, chi và lãi lỗ
+Trả lời: map khác forEach ở đâu? Khi nào dùng cái nào?
+Khi cần lặp qua một mảng, chúng ta có thể sử dụng forEach, forhoặc for..of.
+Khi cần lặp lại và trả về dữ liệu cho từng phần tử, chúng ta có thể sử dụng map.
