@@ -79,6 +79,7 @@ header.top .brand{font-size:15px; color:var(--muted)}
 
 .prep{border-left:4px solid var(--hl); padding:4px 0 4px 16px; margin:12px 0 24px}
 .prep h3{margin:0 0 6px; font-size:19px}
+.mini{margin:14px 0 0; font-size:15px; color:var(--muted); font-style:italic}
 .missed{border-left:4px solid var(--red); padding:4px 0 4px 16px; margin:0 0 20px}
 .missed h3{margin:0 0 4px; font-size:19px}
 .missed p{margin:0 0 6px; color:var(--muted)}
@@ -173,7 +174,7 @@ footer{margin-top:48px; color:var(--muted); font-size:14px}
   </main>
 
   <footer>
-    <p>Mỗi tối: 30 phút học, 60 phút làm cho app, 5 phút ghi chú. Bí quá 30 phút mới hỏi AI, và nhờ AI giải thích chứ không xin code làm sẵn. Lỡ một buổi thì không bù gấp đôi: bù vào Chủ nhật, hoặc tuần dự phòng trước Tết.</p>
+    <p>Ngày thường khoảng 1 đến 1,5 tiếng, cuối tuần khoảng 2 tiếng. Về muộn thì chỉ cần làm bước 1 và 2 của phần Làm. Bí quá 30 phút mới hỏi AI, và nhờ AI giải thích chứ không xin code làm sẵn. Lỡ một buổi thì không bù gấp đôi: bù vào Chủ nhật, hoặc tuần dự phòng trước Tết.</p>
     <p>Muốn xem trước một ngày bất kỳ, thêm <code>?date=2026-11-05</code> vào cuối đường dẫn. Đánh dấu “đã xong” được lưu trong trình duyệt của máy đang dùng.</p>
   </footer>
 </div>
@@ -189,9 +190,9 @@ const PV = {type:'pv', g:'Phỏng vấn hoặc ôn phỏng vấn',
   l:['Trước phỏng vấn: đọc lại CV, chuẩn bị 2 câu hỏi để hỏi lại nhà tuyển dụng','Sau phỏng vấn: ghi các câu hỏi đã gặp vào notes.md, câu nào trả lời chưa tốt thì tra lại ngay','Cập nhật bảng theo dõi ứng tuyển (công ty, vòng, ngày, kết quả)'],
   c:'Câu hỏi nào hôm nay làm bạn lúng túng nhất, và câu trả lời tốt hơn là gì?', d:[]};
 const REST = g => ({type:'nghi', g, h:[], l:['Nghỉ ngơi, dành thời gian cho gia đình. Nghỉ cũng là một phần của lộ trình.'], c:'', d:[]});
-const SUNDAY = {type:'on', g:'Ôn tập tuần và viết nhật ký',
-  h:['Gấp ghi chú lại, tự trả lời to các câu “tự kiểm tra” trong tuần','Câu nào trả lời chưa trôi chảy thì đọc lại bài đó'],
-  l:['Cho vợ dùng thử phiên bản mới nhất của app, ghi lại góp ý','Viết nhật ký tuần vào notes.md (mẫu ở cuối trang)','Xem trước nội dung tuần sau trên trang này'],
+const SUNDAY = {type:'on', g:'Bù bài, ôn tập và viết nhật ký',
+  h:['Ưu tiên 1: còn buổi nào trong tuần chưa xong thì làm bù trước, chỉ cần phần Làm','Ưu tiên 2: nếu đã xong hết, gấp ghi chú lại và tự trả lời các câu “tự kiểm tra” trong tuần'],
+  l:['Làm bù buổi chưa xong (xem mục “Buổi tiếp theo của bạn” ở đầu trang)','Cho vợ dùng thử phiên bản mới nhất của app, ghi lại góp ý','Viết nhật ký tuần vào notes.md (mẫu ở cuối trang), khoảng 10 phút'],
   c:'Tuần này điều gì khó nhất, và mình đã vượt qua nó thế nào?', d:[]};
 
 const PHASES = [
@@ -262,7 +263,7 @@ const WEEKS = [
   h:['<code>async/await</code>: viết code bất đồng bộ dễ đọc như code thường','<code>try</code>, <code>catch</code>, <code>finally</code>'],
   l:['Viết lại <code>saveData</code> và <code>loadData</code> bằng async/await','Bọc <code>JSON.parse</code> trong try/catch phòng dữ liệu bị hỏng','Hiện thông báo lỗi dễ hiểu cho người dùng'],
   c:'Nếu quên chữ await trước một Promise thì chuyện gì xảy ra?', d:[J('async-await'), J('try-catch')]},
- {g:'Tải danh mục bằng fetch',
+ {opt:1, g:'Tải danh mục bằng fetch',
   h:['<code>fetch</code> và <code>response.json()</code>','Kiểm tra <code>response.ok</code> trước khi dùng dữ liệu'],
   l:['Tạo <code>categories.json</code> chứa danh mục cho thu, chi, nhập hàng','Tải bằng fetch khi mở trang, đổ vào ô chọn danh mục','Ô danh mục tự đổi theo loại giao dịch đang chọn'],
   c:'fetch khác $.ajax ở những điểm nào?', d:[J('fetch')]},
@@ -310,7 +311,7 @@ const WEEKS = [
   h:['<code>Partial</code>, <code>Pick</code>, <code>Omit</code>, <code>Record</code>'],
   l:['<code>type NewTransaction = Omit&lt;Transaction, "id"&gt;</code> cho form tạo mới','<code>type TransactionUpdate = Partial&lt;NewTransaction&gt;</code> cho form sửa','Dùng <code>Record</code> cho kết quả nhóm theo danh mục'],
   c:'Vì sao form tạo mới không nên có id?', d:[TS('Utility Types','utility-types.html')]},
- {g:'as const, enum và union',
+ {opt:1, g:'as const, enum và union',
   h:['<code>as const</code> và cách suy ra kiểu từ một mảng','So sánh enum với union, vì sao nhiều nhóm chọn union'],
   l:['Khai báo danh sách danh mục bằng <code>as const</code>','Suy ra kiểu Category từ danh sách đó'],
   c:'Lợi ích của việc chỉ khai báo danh mục ở một chỗ duy nhất là gì?', d:[TS('Enums','enums.html')]},
@@ -378,7 +379,7 @@ const WEEKS = [
   h:['Dữ liệu suy ra từ state, không cần lưu thêm state','<code>useMemo</code> và khi nào thật sự cần'],
   l:['Lọc theo tháng, loại, danh mục','Tổng tiền tính theo dữ liệu đã lọc'],
   c:'Vì sao không nên lưu “danh sách đã lọc” thành một state riêng?', d:[L('react.dev: useMemo','https://react.dev/reference/react/useMemo')]},
- {g:'Tìm kiếm và hoàn thiện',
+ {opt:1, g:'Tìm kiếm và hoàn thiện',
   h:['Xử lý ô tìm kiếm theo ghi chú'],
   l:['Ô tìm kiếm theo ghi chú, không phân biệt hoa thường','Kiểm tra lại toàn bộ thêm, sửa, xóa, lọc','Commit, nhờ AI review'],
   c:'Nếu có 10.000 giao dịch, phần nào có thể bị chậm?', d:[]}
@@ -396,7 +397,7 @@ const WEEKS = [
   h:['Áp dụng lại toàn bộ kiến thức thêm, sửa, xóa'],
   l:['Thêm, sửa, xóa danh mục','Không cho xóa danh mục đang có giao dịch'],
   c:'Vì sao không nên cho xóa danh mục đang được dùng?', d:[]},
- {g:'Trang chi tiết giao dịch',
+ {opt:1, g:'Trang chi tiết giao dịch',
   h:['Tham số trên URL, <code>useParams</code>'],
   l:['Trang <code>/giao-dich/:id</code> hiển thị chi tiết','Hiện thông báo khi không tìm thấy giao dịch'],
   c:'Khi nào nên đưa thông tin lên URL?', d:[L('React Router','https://reactrouter.com')]},
@@ -418,7 +419,7 @@ const WEEKS = [
   h:['Schema là gì','Dùng chung schema cho kiểm tra dữ liệu và kiểu TypeScript (<code>z.infer</code>)'],
   l:['Viết schema cho giao dịch','Nối Zod với React Hook Form'],
   c:'Lợi ích của việc định nghĩa kiểu và luật kiểm tra ở cùng một chỗ là gì?', d:[L('Zod','https://zod.dev')]},
- {g:'Context API',
+ {opt:1, g:'Context API',
   h:['Truyền dữ liệu xuống sâu mà không cần props qua từng tầng'],
   l:['Tạo <code>SettingsContext</code>: tên tiệm, đơn vị tiền','Hiển thị tên tiệm ở header'],
   c:'Khi nào nên dùng Context, khi nào không nên?', d:[R('passing-data-deeply-with-context')]},
@@ -426,11 +427,11 @@ const WEEKS = [
   h:['Gom logic cập nhật state vào một chỗ'],
   l:['Chuyển logic giao dịch sang reducer với các action: thêm, sửa, xóa'],
   c:'useReducer có điểm gì giống cách bạn tổ chức code xử lý sự kiện trong jQuery?', d:[R('extracting-state-logic-into-a-reducer')]},
- {g:'Trạng thái rỗng, lỗi, đang tải',
+ {opt:1, g:'Trạng thái rỗng, lỗi, đang tải',
   h:['Thiết kế cho trường hợp không có dữ liệu và trường hợp lỗi'],
   l:['Component <code>EmptyState</code> có nút “Thêm giao dịch đầu tiên”','Thông báo lỗi rõ ràng khi lưu thất bại'],
   c:'Một màn hình trống tốt nên nói gì với người dùng?', d:[]},
- {g:'Refactor và review',
+ {opt:1, g:'Refactor và review',
   h:['Đọc lại code của chính mình như người lạ'],
   l:['Đặt lại tên biến, tên hàm cho rõ nghĩa','Xóa code thừa','Nhờ AI review, sửa theo góp ý hợp lý'],
   c:'Góp ý nào của AI bạn không đồng ý, và vì sao?', d:[]}
@@ -440,7 +441,7 @@ const WEEKS = [
   h:['Cài và dùng Recharts'],
   l:['Biểu đồ cột thu và chi theo từng ngày trong tháng'],
   c:'Dữ liệu cần chuẩn bị ở dạng nào để vẽ được biểu đồ?', d:[L('Recharts','https://recharts.org')]},
- {g:'Biểu đồ tròn theo danh mục',
+ {opt:1, g:'Biểu đồ tròn theo danh mục',
   h:['Chuyển dữ liệu nhóm theo danh mục thành dạng biểu đồ cần'],
   l:['Biểu đồ tròn chi phí theo danh mục','Kèm bảng số liệu bên cạnh cho dễ đọc'],
   c:'Khi nào biểu đồ tròn không phù hợp?', d:[L('Recharts','https://recharts.org')]},
@@ -448,7 +449,7 @@ const WEEKS = [
   h:['Tính phần trăm tăng giảm'],
   l:['Trang báo cáo: tổng thu, chi, nhập hàng, lãi lỗ','So sánh với tháng trước, hiện tăng hay giảm bao nhiêu phần trăm'],
   c:'Ba con số nào vợ bạn quan tâm nhất mỗi cuối tháng?', d:[]},
- {g:'Xuất file CSV',
+ {opt:1, g:'Xuất file CSV',
   h:['<code>Blob</code> và tạo link tải xuống','Thêm ký tự BOM để Excel đọc đúng tiếng Việt'],
   l:['Nút “Xuất CSV” cho tháng đang xem','Mở thử bằng Excel, kiểm tra dấu tiếng Việt'],
   c:'Vì sao file CSV có thể bị lỗi font tiếng Việt khi mở bằng Excel?', d:[]},
@@ -515,7 +516,7 @@ const WEEKS = [
   c:'Thư mục [id] trong Next.js tương ứng với gì trong React Router?', d:[L('Vercel: Deploy Next.js','https://vercel.com/docs/frameworks/nextjs')]}
 ]},
 /* 12 */ {t:'Next.js nâng cao', goal:'V3 chạy như app trên điện thoại', days:[
- {g:'Route Handlers',
+ {opt:1, g:'Route Handlers',
   h:['Viết API ngay trong Next.js: <code>app/api/.../route.ts</code>'],
   l:['Viết API thử <code>GET /api/health</code> trả về JSON'],
   c:'Khi nào API trong Next.js là đủ, khi nào cần backend riêng?', d:[L('Next.js: Route Handlers','https://nextjs.org/docs/app/getting-started/route-handlers-and-middleware')]},
@@ -527,7 +528,7 @@ const WEEKS = [
   h:['<code>metadata</code>, <code>generateMetadata</code>, Open Graph'],
   l:['Thêm title, description cho từng trang','Liên hệ với những gì bạn đã làm SEO cho duanraucau.com'],
   c:'Next.js giúp SEO tốt hơn React thuần nhờ đâu?', d:[L('Next.js: Metadata','https://nextjs.org/docs/app/getting-started/metadata-and-og-images')]},
- {g:'Hiệu năng',
+ {opt:1, g:'Hiệu năng',
   h:['<code>next/image</code>, <code>next/font</code>','Đo bằng Lighthouse trong Chrome DevTools'],
   l:['Chạy Lighthouse, ghi điểm số','Sửa ít nhất 2 điểm được đề xuất, đo lại'],
   c:'Chỉ số nào của Lighthouse ảnh hưởng nhiều nhất đến trải nghiệm trên điện thoại?', d:[L('Next.js: Image Optimization','https://nextjs.org/docs/app/getting-started/images')]},
@@ -813,7 +814,7 @@ const WEEKS = [
   h:['Seed giúp ai cũng chạy được dự án với dữ liệu có sẵn'],
   l:['Script seed tạo danh mục và 100 giao dịch mẫu'],
   c:'Vì sao không dùng dữ liệu thật của vợ để phát triển?', d:[L('Prisma: Seeding','https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding')]},
- {g:'Ghi log và lỗi rõ ràng',
+ {opt:1, g:'Ghi log và lỗi rõ ràng',
   h:['Logger của NestJS','Exception filter'],
   l:['Log mỗi request và lỗi','Thông báo lỗi trả về thống nhất một dạng'],
   c:'Khi app lỗi lúc vợ đang dùng, bạn cần thông tin gì để tìm ra nguyên nhân?', d:[NE('Logger','techniques/logger'), NE('Exception filters','exception-filters')]},
@@ -945,7 +946,7 @@ const WEEKS = [
   h:['Tỷ lệ hao hụt'],
   l:['Báo cáo số hũ và số tiền hao hụt theo tháng, theo lý do'],
   c:'Tỷ lệ hao hụt bao nhiêu thì đáng lo?', d:[]},
- {g:'Tác vụ chạy định kỳ',
+ {opt:1, g:'Tác vụ chạy định kỳ',
   h:['NestJS Schedule: chạy việc theo lịch'],
   l:['Mỗi sáng kiểm tra mẻ sắp hết hạn, lưu thành thông báo'],
   c:'Việc nào nữa trong tiệm có thể tự động hóa theo lịch?', d:[NE('Task scheduling','techniques/task-scheduling')]},
@@ -1053,7 +1054,7 @@ const WEEKS = [
   h:['Test như người dùng thật bấm trên trình duyệt'],
   l:['Test luồng: đăng nhập, nhập giao dịch, xem báo cáo'],
   c:'Playwright test khác test API ở đâu?', d:[L('Playwright','https://playwright.dev/docs/intro')]},
- {g:'Theo dõi lỗi khi chạy thật',
+ {opt:1, g:'Theo dõi lỗi khi chạy thật',
   h:['Biết lỗi trước khi người dùng báo'],
   l:['Xem log trên Render','Thử gắn một công cụ theo dõi lỗi bản miễn phí'],
   c:'Làm sao biết app đang lỗi khi vợ không báo?', d:[]},
@@ -1183,9 +1184,11 @@ const WEEKS = [
     const id = 'chk-' + key + (opts && opts.prefix ? '-' + opts.prefix : '');
     let html = '<div class="day-card">';
     html += '<h3 class="day-goal"><span>' + day.g + '</span></h3>';
-    if (day.type && TAGS[day.type]) html += '<span class="tag ' + TAGS[day.type][1] + '">' + TAGS[day.type][0] + '</span>';
+    if (day.type && TAGS[day.type]) html += '<span class="tag ' + TAGS[day.type][1] + '">' + TAGS[day.type][0] + '</span> ';
+    if (day.opt) html += '<span class="tag rest">Có thể bỏ qua nếu đang chậm</span>';
     if (day.h && day.h.length) html += '<div class="blk"><h4>Học</h4><ul>' + day.h.map(x => '<li>' + x + '</li>').join('') + '</ul></div>';
     if (day.l && day.l.length) html += '<div class="blk"><h4>Làm</h4><ol>' + day.l.map(x => '<li>' + x + '</li>').join('') + '</ol></div>';
+    if (!day.type && day.l && day.l.length > 1) html += '<p class="mini">Tối nay về muộn? Chỉ cần làm bước 1 và 2 của phần Làm (khoảng 30 đến 45 phút), phần còn lại để Chủ nhật.</p>';
     if (day.c) html += '<div class="blk"><h4>Tự kiểm tra</h4><p class="check-q hand">' + day.c + '</p></div>';
     if (day.d && day.d.length) html += '<div class="blk docs"><h4>Tài liệu</h4>' + day.d.map(x => '<a href="' + esc(x[1]) + '" target="_blank" rel="noopener">' + x[0] + '</a>').join('') + '</div>';
     if (countsForProgress(day)) {
@@ -1223,12 +1226,19 @@ const WEEKS = [
       html += '<h1 class="today-date hand">' + DAY_NAMES[i] + ', ' + vn(TODAY) + '</h1>';
       html += '<p class="today-meta">Tuần ' + (w+1) + '/' + WEEKS.length + ': ' + WEEKS[w].t + '. ' + ph.n + (ph.n !== ph.name ? ': ' + ph.name : '') + '</p>';
       html += '<p class="milestone hand">' + nextMilestone() + '</p>';
-      const missed = missedDays();
+      const all = missedDays();
+      const missed = all.filter(m => !m.opt), skipped = all.length - missed.length;
       if (missed.length) {
-        html += '<div class="missed"><h3>Còn ' + missed.length + ' buổi chưa xong</h3><p>Không sao cả. Cứ làm buổi hôm nay trước, bù vào Chủ nhật hoặc tuần dự phòng 25/01 đến 31/01.</p><ul>';
-        html += missed.slice(0, 5).map(m => '<li><button type="button" data-goto="' + m.idx + '">' + SHORT[m.idx % 7] + ' ' + vnShort(m.date) + ': ' + m.g + '</button></li>').join('');
-        if (missed.length > 5) html += '<li>và ' + (missed.length - 5) + ' buổi khác</li>';
-        html += '</ul></div>';
+        const next = missed[0];
+        const todayDay = getDay(w, i);
+        html += '<div class="missed"><h3>Bạn đang chậm ' + missed.length + ' buổi so với kế hoạch. Không sao cả!</h3>';
+        html += '<p>Cứ học tiếp từ buổi chưa xong đầu tiên, theo đúng thứ tự. Lịch có sẵn chỗ để bù: Chủ nhật, các buổi “có thể bỏ qua” và tuần dự phòng 25/01 đến 31/01.' + (skipped ? ' (' + skipped + ' buổi tùy chọn chưa làm không tính là chậm.)' : '') + '</p>';
+        if (missed.length > 1) html += '<p>Các buổi chưa xong: ' + missed.slice(0, 6).map(m => '<button type="button" data-goto="' + m.idx + '">' + SHORT[m.idx % 7] + ' ' + vnShort(m.date) + '</button>').join(', ') + (missed.length > 6 ? ' và ' + (missed.length - 6) + ' buổi khác' : '') + '.</p>';
+        html += '<p>Theo kế hoạch, hôm nay là buổi: <button type="button" data-goto="' + todayIndex + '">' + todayDay.g + '</button></p></div>';
+        html += '<p class="today-meta"><strong>Buổi tiếp theo của bạn</strong> (theo kế hoạch là ' + DAY_NAMES[next.idx % 7] + ' ' + vnShort(next.date) + '):</p>';
+        html += dayCard(Math.floor(next.idx / 7), next.idx % 7, {prefix:'hero'});
+        el.innerHTML = html;
+        return;
       }
       html += dayCard(w, i, {prefix:'hero'});
     }
@@ -1240,7 +1250,7 @@ const WEEKS = [
     const last = Math.min(todayIndex, TOTAL_DAYS);
     for (let idx = 0; idx < last; idx++) {
       const w = Math.floor(idx / 7), i = idx % 7, day = getDay(w, i), date = addDays(START, idx);
-      if (countsForProgress(day) && !done[iso(date)]) out.push({idx, date, g: day.g});
+      if (countsForProgress(day) && !done[iso(date)]) out.push({idx, date, g: day.g, opt: !!day.opt});
     }
     return out;
   }
