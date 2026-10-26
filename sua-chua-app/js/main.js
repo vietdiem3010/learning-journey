@@ -2,6 +2,7 @@
 import { loadTransactions, saveTransactions } from './storage.js';
 import { formatMoney, formatDate, getTypeLabel } from './utils.js';
 import { addTransaction, getTotal, getProfit } from './transactions.js';
+import { validateTransaction, getToday } from './validation.js';
 
 const form = document.querySelector("#tx-form");
 
@@ -57,28 +58,60 @@ function render(list) {
     renderSummary(list);
 }
 
+// ===== Hiện / xóa lỗi dưới ô nhập =====
+
+// Gán lỗi cho từng ô; ô nào không có lỗi thì gán "" (nên showErrors({}) là xóa hết)
+function showErrors(errors) {
+    form.querySelectorAll(".error-message").forEach(el => {
+        const field = el.dataset.errorFor;
+        el.textContent = errors[field] ?? "";
+    });
+}
+
+function clearErrors(name) {
+    form.querySelectorAll(".error-message").forEach(el => {
+        if (el.dataset.errorFor === name) {
+            el.textContent = "";
+        }
+    });
+}
+
 // ===== Khởi động =====
 
 // Chưa có gì trong localStorage thì là mảng rỗng
 let transactions = loadTransactions();
 render(transactions);
+form.elements.date.max = getToday(); // lịch không cho chọn ngày sau hôm nay
 
 // ===== Thêm giao dịch từ form =====
 form.addEventListener("submit", (event) => {
     event.preventDefault(); // chặn trình duyệt tải lại trang
 
     const data = new FormData(form);
+    const amountText = data.get("amount");
     const tx = {
         id: Date.now(),
         type: data.get("type"),
-        amount: Number(data.get("amount")), // input luôn trả về chuỗi, phải đổi sang số
+        amount: amountText === "" ? NaN : Number(amountText), // input luôn trả về chuỗi; Number("") là 0 nên ô trống phải đổi thành NaN
         category: data.get("category"),
         note: data.get("note"),
         date: data.get("date")
     };
 
+    const errors = validateTransaction(tx);
+    showErrors(errors);
+    if (Object.keys(errors).length > 0) {
+        return;
+    }
+
     transactions = addTransaction(transactions, tx);
     saveTransactions(transactions);
     render(transactions);
     form.reset();
+});
+
+// Người dùng sửa ô nào thì xóa lỗi của ô đó.
+// Gắn một lần trên form: sự kiện input của ô con sẽ nổi bọt lên form
+form.addEventListener("input", (event) => {
+    clearErrors(event.target.name);
 });

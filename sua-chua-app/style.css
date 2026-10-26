@@ -1,0 +1,14 @@
+form#tx-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start; /* không kéo giãn các ô cho cao bằng ô có dòng lỗi */
+}
+/* Xếp ô nhập và dòng báo lỗi theo cột để lỗi nằm ngay dưới ô */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.error-message {
+    color: red;
+}
