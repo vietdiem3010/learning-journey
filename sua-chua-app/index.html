@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thu chi tiệm sữa chua</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Thu chi tiệm sữa chua</h1>
+
+  <form id="tx-form">
+    <select name="type" required>
+      <option value="income">Thu</option>
+      <option value="expense">Chi</option>
+      <option value="purchase">Nhập hàng</option>
+    </select>
+    <input type="number" name="amount" placeholder="Số tiền" required>
+    <select name="category" required>
+      <option value="">-- Chọn danh mục --</option>
+      <option value="Bán hàng">Bán hàng</option>
+      <option value="Sữa">Sữa</option>
+      <option value="Bao bì">Bao bì</option>
+      <option value="Điện nước">Điện nước</option>
+      <option value="Vận chuyển">Vận chuyển</option>
+    </select>
+    <input type="text" name="note" placeholder="Ghi chú">
+    <input type="date" name="date" required>
+    <button type="submit">Thêm</button>
+  </form>
+
+  <section id="summary"></section>
+  <table id="tx-table">
+    <thead><tr><th>Ngày</th><th>Loại</th><th>Danh mục</th><th>Ghi chú</th><th>Số tiền</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
