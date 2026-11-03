@@ -94,3 +94,25 @@ console.log(getTypeLabel(giaodich2.type));
 console.log(getTypeLabel(giaodich3.type));
 console.log(getTypeLabel(giaodich4.type));
 console.log(getTypeLabel(giaodich5.type));
+
+
+async function f() {
+    return "Hello, world!";
+}
+
+f().then(console.log);
+
+async function g() {
+    let promise = new Promise((resolve, reject) => {
+        setTimeout(() => resolve("Hello from g!"), 1000);
+    });
+    let result = await promise;
+    console.log(result);
+}
+
+g();
+
+let url = "https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits";
+let response = await fetch(url);
+let commits = await response.json();
+console.log(commits[0].author.login);
